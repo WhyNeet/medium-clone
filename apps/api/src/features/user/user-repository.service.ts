@@ -1,5 +1,4 @@
 import type { User } from "@/core/entities/user.entity";
-import type { ObjectId } from "mongoose";
 import { UserFactoryService } from "./user-factory.service";
 import { IDataServices } from "@/core/abstracts/data-services.abstract";
 import { Injectable } from "@nestjs/common";
@@ -15,15 +14,15 @@ export class UserRepositoryService {
     return this.dataServices.users.create(user);
   }
 
-  public getUserById(id: ObjectId): Promise<User | null> {
+  public getUserById(id: string): Promise<User | null> {
     return this.dataServices.users.get(id);
   }
 
-  public updateUser(id: ObjectId, user: User): Promise<User | null> {
+  public updateUser(id: string, user: User): Promise<User | null> {
     return this.dataServices.users.update(id, user);
   }
 
-  public deleteUser(id: ObjectId): Promise<User | null> {
+  public deleteUser(id: string): Promise<User | null> {
     return this.dataServices.users.delete(id);
   }
 }

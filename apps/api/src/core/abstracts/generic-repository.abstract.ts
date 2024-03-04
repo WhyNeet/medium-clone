@@ -1,11 +1,11 @@
-export abstract class IGenericRepository<Entity, Id> {
+export abstract class IGenericRepository<Entity> {
   abstract getAll(): Promise<Entity[]>;
 
-  abstract get(id: Id): Promise<Entity | null>;
+  abstract get(id: string): Promise<Entity | null>;
 
   abstract create(entity: Entity): Promise<Entity>;
 
-  abstract update(id: Id, entity: Entity): Promise<Entity | null>;
+  abstract update(id: string, entity: Entity): Promise<Entity | null>;
 
-  abstract delete(id: Id): Promise<Entity | null>;
+  abstract delete(id: string): Promise<Entity | null>;
 }

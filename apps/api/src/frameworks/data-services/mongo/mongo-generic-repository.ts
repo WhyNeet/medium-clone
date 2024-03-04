@@ -1,8 +1,8 @@
 import type { IGenericRepository } from "@/core/abstracts/generic-repository.abstract";
-import type { Model, ObjectId } from "mongoose";
+import type { Model } from "mongoose";
 
 export class MongoGenericRepository<Entity>
-  implements IGenericRepository<Entity, ObjectId>
+  implements IGenericRepository<Entity>
 {
   private model: Model<Entity>;
 
@@ -18,15 +18,15 @@ export class MongoGenericRepository<Entity>
     return this.model.find().exec();
   }
 
-  get(id: ObjectId): Promise<Entity | null> {
+  get(id: string): Promise<Entity | null> {
     return this.model.findById(id).exec();
   }
 
-  update(id: ObjectId, entity: Entity): Promise<Entity | null> {
+  update(id: string, entity: Entity): Promise<Entity | null> {
     return this.model.findByIdAndUpdate(id, entity).exec();
   }
 
-  delete(id: ObjectId): Promise<Entity | null> {
+  delete(id: string): Promise<Entity | null> {
     return this.model.findByIdAndDelete(id).exec();
   }
 }
