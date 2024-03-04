@@ -18,8 +18,12 @@ export class MongoGenericRepository<Entity>
     return this.model.find().exec();
   }
 
-  get(id: string): Promise<Entity | null> {
+  getById(id: string): Promise<Entity | null> {
     return this.model.findById(id).exec();
+  }
+
+  get(filter: Record<string, string>): Promise<Entity | null> {
+    return this.model.findOne(filter).exec();
   }
 
   update(id: string, entity: Entity): Promise<Entity | null> {

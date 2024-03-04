@@ -1,7 +1,9 @@
 export abstract class IGenericRepository<Entity> {
   abstract getAll(): Promise<Entity[]>;
 
-  abstract get(id: string): Promise<Entity | null>;
+  abstract getById(id: string): Promise<Entity | null>;
+
+  abstract get(filter: Record<string, string>): Promise<Entity | null>;
 
   abstract create(entity: Entity): Promise<Entity>;
 
