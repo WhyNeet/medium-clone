@@ -1,4 +1,10 @@
-import { IsEmail, IsString, Matches, Max, Min } from "class-validator";
+import {
+  IsEmail,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+} from "class-validator";
 
 export class UserDto {
   email: string;
@@ -18,19 +24,19 @@ export class CreateUserDto {
   email: string;
 
   @IsString({ message: "must be a string" })
-  @Min(2, { message: "must be at least 2 characters long" })
-  @Max(32, { message: "must be at most 32 characters long" })
+  @MinLength(2, { message: "must be at least 2 characters long" })
+  @MaxLength(32, { message: "must be at most 32 characters long" })
   @Matches(/^[0-9A-Za-z_-]{2,32}$/, { message: "must be a valid username" })
   username: string;
 
   @IsString({ message: "must be a string" })
-  @Min(8, { message: "must be at least 8 characters long" })
-  @Max(72, { message: "must be at most 72 characters long" })
+  @MinLength(8, { message: "must be at least 8 characters long" })
+  @MaxLength(72, { message: "must be at most 72 characters long" })
   password: string;
 
   @IsString({ message: "must be a string" })
-  @Min(1, { message: "must be at least 1 character long" })
-  @Max(32, { message: "must be at most 32 characters long" })
+  @MinLength(1, { message: "must be at least 1 character long" })
+  @MaxLength(32, { message: "must be at most 32 characters long" })
   name: string;
 }
 
@@ -40,7 +46,7 @@ export class UserCredentialsDto {
   email: string;
 
   @IsString({ message: "must be a string" })
-  @Min(8, { message: "must be at least 8 characters long" })
-  @Max(72, { message: "must be at most 72 characters long" })
+  @MinLength(8, { message: "must be at least 8 characters long" })
+  @MaxLength(72, { message: "must be at most 72 characters long" })
   password: string;
 }
