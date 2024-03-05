@@ -2,6 +2,7 @@ import { CreateUserDto } from "@/core/dtos/user.dto";
 import { User } from "@/core/entities/user.entity";
 import { CryptoService } from "@/frameworks/auth-services/crypto/crypto.service";
 import { Injectable } from "@nestjs/common";
+import { Types } from "mongoose";
 
 @Injectable()
 export class UserFactoryService {
@@ -17,6 +18,7 @@ export class UserFactoryService {
   ): User {
     const user = new User();
 
+    user._id = new Types.ObjectId();
     user.email = email;
     user.username = username;
     user.password = password;
@@ -30,6 +32,7 @@ export class UserFactoryService {
   public createFromDto(createUserDto: CreateUserDto): User {
     const user = new User();
 
+    user._id = new Types.ObjectId();
     user.email = createUserDto.email;
     user.username = createUserDto.username;
     user.password = createUserDto.password;
