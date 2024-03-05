@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy, WithSecretOrKey } from "passport-jwt";
 import { ConfigService } from "@nestjs/config";
-import { TokenPayload } from "../types/token-payload.interface";
+import { AccessTokenPayload } from "../types/token-payload.interface";
 import { CookiesExtractorService } from "../extractors/cookies-extractor.service";
 import { TokenType } from "../types/token-type.enum";
 import { TokenUser } from "../types/token-user.interface";
@@ -29,7 +29,7 @@ export class AccessTokenStrategy extends PassportStrategy(
     super(options);
   }
 
-  public async validate(payload: TokenPayload): Promise<TokenUser> {
+  public async validate(payload: AccessTokenPayload): Promise<TokenUser> {
     return { id: payload.sub };
   }
 }

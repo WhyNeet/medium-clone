@@ -1,4 +1,8 @@
-export interface TokenPayload {
+export interface AccessTokenPayload {
   sub: string;
-  exp: number;
+}
+
+export interface RefreshTokenPayload {
+  sub: string;
+  jti: string;
 }
