@@ -11,10 +11,11 @@ export class UserRepositoryService {
     private userFactoryService: UserFactoryService,
   ) {}
 
-  public createUser(createUserDto: CreateUserDto): Promise<User> {
+  public async createUser(createUserDto: CreateUserDto): Promise<User> {
     const user = this.userFactoryService.createFromDto(createUserDto);
+    const encryptedUser = await this.userFactoryService.createEncrypted(user);
 
-    return this.dataServices.users.create(user);
+    return this.dataServices.users.create(encryptedUser);
   }
 
   public getUserById(id: string): Promise<User | null> {
