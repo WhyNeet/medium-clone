@@ -1,4 +1,4 @@
-import { INestApplication } from "@nestjs/common";
+import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import cookieParser from "cookie-parser";
 
@@ -7,6 +7,12 @@ export class ApplicationFactory {
     module: M,
   ) {
     const app: INestApplication = await NestFactory.create(module);
+
+    app.useGlobalPipes(
+      new ValidationPipe({
+        transform: true,
+      }),
+    );
 
     app.use(cookieParser());
 
