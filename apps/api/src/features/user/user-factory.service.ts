@@ -43,7 +43,7 @@ export class UserFactoryService {
   public createDto(user: User): UserDto {
     const userDto = new UserDto();
 
-    // userDto.id = user._id.toString();
+    userDto.id = user.id.toString();
     userDto.email = user.email;
     userDto.username = user.username;
     userDto.name = user.name;
