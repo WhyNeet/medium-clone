@@ -1,14 +1,9 @@
 import { CreateUserDto, UserCredentialsDto } from "@/core/dtos/user.dto";
 import { AuthService } from "@/features/auth/auth.service";
+import { AuthException } from "@/features/exception/exceptions/auth.exception";
 import { UserFactoryService } from "@/features/user/user-factory.service";
 import { UserRepositoryService } from "@/features/user/user-repository.service";
-import {
-  Body,
-  Controller,
-  Post,
-  Res,
-  UnauthorizedException,
-} from "@nestjs/common";
+import { Body, Controller, Post, Res } from "@nestjs/common";
 import type { Response } from "express";
 
 @Controller("/auth")
@@ -28,14 +23,14 @@ export class AuthController {
       userCredentialsDto.email,
     );
 
-    if (!user) throw new UnauthorizedException("User does not exist.");
+    if (!user) throw new AuthException.UserDoesNotExist();
 
     const isPasswordValid = await this.authService.verifyUserPassword(
       userCredentialsDto.password,
       user.password,
     );
 
-    if (!isPasswordValid) throw new UnauthorizedException("Wrong password.");
+    if (!isPasswordValid) throw new AuthException.WrongPassword();
 
     const { accessToken, refreshToken } = await this.authService.issueTokenPair(
       user.id,
