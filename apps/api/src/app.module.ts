@@ -4,6 +4,7 @@ import { DataServicesModule } from "@/frameworks/data-services/data-services.mod
 import { AuthServicesModule } from "@/frameworks/auth-services/auth-services.module";
 import { FeaturesModule } from "@/features/features.module";
 import { AuthController } from "./controllers/auth.controller";
+import { ExceptionHandlingModule } from "./frameworks/exception-handing/exception-handling.module";
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { AuthController } from "./controllers/auth.controller";
     DataServicesModule,
     AuthServicesModule,
     FeaturesModule,
+    ExceptionHandlingModule,
   ],
   controllers: [AuthController],
   providers: [],
