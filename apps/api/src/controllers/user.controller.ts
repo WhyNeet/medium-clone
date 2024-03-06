@@ -1,3 +1,4 @@
+import { UserException } from "@/features/exception/exceptions/user.exception";
 import { UserFactoryService } from "@/features/user/user-factory.service";
 import { UserRepositoryService } from "@/features/user/user-repository.service";
 import { User } from "@/features/user/user.decorator";
@@ -24,12 +25,22 @@ export class UserController {
   public async getByUsername(@Param("username") username: string) {
     const user = await this.userRepositoryService.getUserByUsername(username);
 
+    if (!user)
+      throw new UserException.UserDoesNotExist(
+        "User with this username does not exist.",
+      );
+
     return { user: this.userFactoryService.createDto(user) };
   }
 
   @Get("/:id")
   public async getById(@Param("id") id: string) {
     const user = await this.userRepositoryService.getUserById(id);
+
+    if (!user)
+      throw new UserException.UserDoesNotExist(
+        "User with this id does not exist.",
+      );
 
     return { user: this.userFactoryService.createDto(user) };
   }
