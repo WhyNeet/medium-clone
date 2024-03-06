@@ -7,6 +7,8 @@ import {
 } from "class-validator";
 
 export class UserDto {
+  id: string;
+
   email: string;
 
   username: string;

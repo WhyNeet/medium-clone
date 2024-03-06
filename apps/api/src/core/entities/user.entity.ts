@@ -1,7 +1,5 @@
-import type { Types } from "mongoose";
-
 export class User {
-  _id: Types.ObjectId;
+  id: string;
 
   email: string;
 
