@@ -6,6 +6,7 @@ import { AccessTokenPayload } from "../types/token-payload.interface";
 import { CookiesExtractorService } from "../extractors/cookies-extractor.service";
 import { TokenType } from "../types/token-type.enum";
 import { TokenUser } from "../types/token-user.interface";
+import { AuthException } from "@/features/exception/exceptions/auth.exception";
 
 @Injectable()
 export class AccessTokenStrategy extends PassportStrategy(
@@ -30,6 +31,9 @@ export class AccessTokenStrategy extends PassportStrategy(
   }
 
   public async validate(payload: AccessTokenPayload): Promise<TokenUser> {
+    if (typeof payload.sub !== "string" || typeof payload.rti !== "string")
+      throw new AuthException.InvalidAccessTokenProvided();
+
     return { id: payload.sub };
   }
 }
