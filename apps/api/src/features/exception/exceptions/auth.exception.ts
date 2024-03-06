@@ -18,7 +18,7 @@ export class AuthException {
   public static readonly WrongPassword: Exception;
 
   @CommonException(
-    "Wrong token provided.",
+    "Invalid token provided.",
     "Please, provide a valid access token.",
     HttpStatus.UNAUTHORIZED,
   )
