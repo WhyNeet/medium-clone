@@ -14,7 +14,7 @@ export function CommonException(
     class Exception extends CommonHttpException {
       constructor(customDetail?: string) {
         super(
-          customType ?? propertyKey,
+          customType ?? `${target.name}/${propertyKey}`,
           title,
           customDetail ?? detail,
           statusCode,
