@@ -9,7 +9,7 @@ import { Response } from "express";
 import { CryptoService } from "@/frameworks/auth-services/crypto/crypto.service";
 import { AuthTokenFactoryService } from "@/features/auth/auth-token-factory.service";
 import { IDataServices } from "@/core/abstracts/data-services.abstract";
-import { UnauthorizedException } from "@nestjs/common";
+import { CommonHttpException } from "@/frameworks/exception-handing/common/common-http.exception";
 
 const exampleUser = new User();
 
@@ -124,7 +124,7 @@ describe("AuthController", () => {
 
       expect(
         authController.login(createUserDto, response as unknown as Response),
-      ).rejects.toThrow(UnauthorizedException);
+      ).rejects.toThrow(CommonHttpException);
     });
   });
 });
