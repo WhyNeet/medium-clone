@@ -23,4 +23,11 @@ export class AuthException {
     HttpStatus.UNAUTHORIZED,
   )
   public static readonly InvalidAccessTokenProvided: Exception;
+
+  @CommonException(
+    "Invalid token provided.",
+    "Please, provide a valid refresh token.",
+    HttpStatus.UNAUTHORIZED,
+  )
+  public static readonly InvalidRefreshTokenProvided: Exception;
 }
