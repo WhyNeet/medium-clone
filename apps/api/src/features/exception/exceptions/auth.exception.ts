@@ -16,18 +16,4 @@ export class AuthException {
     HttpStatus.BAD_REQUEST,
   )
   public static readonly WrongPassword: Exception;
-
-  @CommonException(
-    "Invalid token provided.",
-    "Please, provide a valid access token.",
-    HttpStatus.UNAUTHORIZED,
-  )
-  public static readonly InvalidAccessTokenProvided: Exception;
-
-  @CommonException(
-    "Invalid token provided.",
-    "Please, provide a valid refresh token.",
-    HttpStatus.UNAUTHORIZED,
-  )
-  public static readonly InvalidRefreshTokenProvided: Exception;
 }

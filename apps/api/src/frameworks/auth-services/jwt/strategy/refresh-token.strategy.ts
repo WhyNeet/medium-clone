@@ -5,8 +5,8 @@ import { ConfigService } from "@nestjs/config";
 import { RefreshTokenPayload } from "../types/token-payload.interface";
 import { CookiesExtractorService } from "../extractors/cookies-extractor.service";
 import { TokenType } from "../types/token-type.enum";
-import { AuthException } from "@/features/exception/exceptions/auth.exception";
 import { TokenUser } from "../types/token-user.interface";
+import { TokenException } from "@/features/exception/exceptions/token.exception";
 
 @Injectable()
 export class RefreshTokenStrategy extends PassportStrategy(
@@ -32,7 +32,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
 
   public async validate(payload: RefreshTokenPayload): Promise<TokenUser> {
     if (typeof payload.sub !== "string" || typeof payload.jti !== "string")
-      throw new AuthException.InvalidRefreshTokenProvided();
+      throw new TokenException.InvalidRefreshTokenProvided();
 
     return { id: payload.sub, jti: payload.jti };
   }
