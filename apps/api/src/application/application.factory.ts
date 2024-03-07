@@ -8,6 +8,8 @@ export class ApplicationFactory {
   ) {
     const app: INestApplication = await NestFactory.create(module);
 
+    app.setGlobalPrefix("/api");
+
     app.useGlobalPipes(
       new ValidationPipe({
         transform: true,
