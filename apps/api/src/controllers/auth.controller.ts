@@ -3,6 +3,7 @@ import { AuthService } from "@/features/auth/auth.service";
 import { AuthException } from "@/features/exception/exceptions/auth.exception";
 import { UserFactoryService } from "@/features/user/user-factory.service";
 import { UserRepositoryService } from "@/features/user/user-repository.service";
+import { TokenType } from "@/frameworks/auth-services/jwt/types/token-type.enum";
 import { Body, Controller, Post, Res } from "@nestjs/common";
 import type { Response } from "express";
 
@@ -36,8 +37,8 @@ export class AuthController {
       user.id,
     );
 
-    response.cookie("access_token", accessToken);
-    response.cookie("refresh_token", refreshToken);
+    response.cookie(TokenType.AccessToken, accessToken);
+    response.cookie(TokenType.RefreshToken, refreshToken);
 
     return {
       user: this.userFactoryService.createDto(user),
@@ -57,8 +58,8 @@ export class AuthController {
       user.id,
     );
 
-    response.cookie("access_token", accessToken);
-    response.cookie("refresh_token", refreshToken);
+    response.cookie(TokenType.AccessToken, accessToken);
+    response.cookie(TokenType.RefreshToken, refreshToken);
 
     return {
       user: this.userFactoryService.createDto(user),
