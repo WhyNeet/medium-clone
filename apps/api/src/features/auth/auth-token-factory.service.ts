@@ -1,5 +1,6 @@
 import type {
   AccessTokenPayload,
+  ApiTokenPayload,
   RefreshTokenPayload,
 } from "@/frameworks/auth-services/jwt/types/token-payload.interface";
 import { Injectable } from "@nestjs/common";
@@ -57,6 +58,29 @@ export class AuthTokenFactoryService {
     const token = await this.jwtService.signAsync(payload, {
       expiresIn: this.refreshTokenExpiresIn,
     });
+
+    return { token, jti: payload.jti };
+  }
+
+  /**
+   *
+   * @param id The user's id.
+   * @param scope Scopes available via this token.
+   * @param expiresIn Token expiration time.
+   * @returns
+   */
+  public async issueApiToken(
+    id: string,
+    scope: string[],
+    expiresIn: string,
+  ): Promise<{ token: string; jti: string }> {
+    const payload: ApiTokenPayload = {
+      sub: id,
+      scope: scope.join(" "),
+      jti: crypto.randomUUID(),
+    };
+
+    const token = await this.jwtService.signAsync(payload, { expiresIn });
 
     return { token, jti: payload.jti };
   }

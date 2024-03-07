@@ -33,4 +33,11 @@ export class TokenException {
     HttpStatus.UNAUTHORIZED,
   )
   public static readonly InvalidApiTokenScope: CustomizableException;
+
+  @CommonException(
+    "Invalid token scope specified.",
+    "Please, specify an existing API token scope.",
+    HttpStatus.BAD_REQUEST,
+  )
+  public static readonly InvalidApiTokenScopeSpecified: CustomizableException;
 }
