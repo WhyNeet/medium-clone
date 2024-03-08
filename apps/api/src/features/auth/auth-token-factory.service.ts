@@ -12,6 +12,7 @@ import crypto from "node:crypto";
 export class AuthTokenFactoryService {
   private accessTokenExpiresIn: string;
   private refreshTokenExpiresIn: string;
+  private apiTokenSecret: string;
 
   constructor(
     private jwtService: JwtService,
@@ -23,6 +24,7 @@ export class AuthTokenFactoryService {
     this.refreshTokenExpiresIn = configService.get<string>(
       "JWT_REFRESH_TOKEN_EXPIRES_IN",
     );
+    this.apiTokenSecret = configService.get<string>("API_TOKEN_JWT_SECRET");
   }
 
   /**
@@ -80,7 +82,10 @@ export class AuthTokenFactoryService {
       jti: crypto.randomUUID(),
     };
 
-    const token = await this.jwtService.signAsync(payload, { expiresIn });
+    const token = await this.jwtService.signAsync(payload, {
+      expiresIn,
+      secret: this.apiTokenSecret,
+    });
 
     return { token, jti: payload.jti };
   }

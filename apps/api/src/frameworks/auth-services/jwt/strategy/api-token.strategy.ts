@@ -32,8 +32,10 @@ export class ApiTokenStrategy extends PassportStrategy(Strategy, "api-token") {
     )
       throw new TokenException.InvalidApiTokenProvided();
 
-    const url = new URL(request.url);
-    const requestScope = url.pathname.slice(0, url.pathname.indexOf("/"));
+    // TODO: check if jti is present in the database
+
+    const path = request.path.slice(5);
+    const requestScope = path.slice(0, path.indexOf("/"));
 
     const allowedScopes = payload.scope.split(" ");
 

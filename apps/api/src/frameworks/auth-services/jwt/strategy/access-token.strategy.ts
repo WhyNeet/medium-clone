@@ -31,6 +31,8 @@ export class AccessTokenStrategy extends PassportStrategy(
   }
 
   public async validate(payload: AccessTokenPayload): Promise<TokenUser> {
+    console.log("validate access token");
+
     if (typeof payload.sub !== "string" || typeof payload.rti !== "string")
       throw new TokenException.InvalidAccessTokenProvided();
 
