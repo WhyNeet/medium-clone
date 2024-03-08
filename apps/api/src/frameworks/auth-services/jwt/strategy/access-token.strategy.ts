@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
-import { ExtractJwt, Strategy, WithSecretOrKey } from "passport-jwt";
+import { Strategy, WithSecretOrKey } from "passport-jwt";
 import { ConfigService } from "@nestjs/config";
 import { AccessTokenPayload } from "../types/token-payload.interface";
 import { CookiesExtractorService } from "../extractors/cookies-extractor.service";
@@ -18,10 +18,9 @@ export class AccessTokenStrategy extends PassportStrategy(
     cookiesExtractorService: CookiesExtractorService,
   ) {
     const options: WithSecretOrKey = {
-      jwtFromRequest: ExtractJwt.fromExtractors([
-        cookiesExtractorService.tokenExtractor(TokenType.AccessToken),
-        ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ]),
+      jwtFromRequest: cookiesExtractorService.tokenExtractor(
+        TokenType.AccessToken,
+      ),
       ignoreExpiration: false,
       algorithms: ["HS256"],
       secretOrKey: configService.get<string>("JWT_SECRET"),
@@ -31,8 +30,6 @@ export class AccessTokenStrategy extends PassportStrategy(
   }
 
   public async validate(payload: AccessTokenPayload): Promise<TokenUser> {
-    console.log("validate access token");
-
     if (typeof payload.sub !== "string" || typeof payload.rti !== "string")
       throw new TokenException.InvalidAccessTokenProvided();
 

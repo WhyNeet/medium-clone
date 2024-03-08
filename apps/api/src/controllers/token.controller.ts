@@ -42,6 +42,8 @@ export class TokenController {
       createApiTokenDto.expiresIn,
     );
 
+    // TODO: store token in a database
+
     return { id: jti, token };
   }
 }
