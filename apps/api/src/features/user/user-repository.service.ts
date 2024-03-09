@@ -26,6 +26,10 @@ export class UserRepositoryService {
     return this.dataServices.users.get({ email });
   }
 
+  public getUserByUsername(username: string): Promise<User | null> {
+    return this.dataServices.users.get({ username });
+  }
+
   public updateUser(id: string, user: User): Promise<User | null> {
     return this.dataServices.users.update(id, user);
   }
