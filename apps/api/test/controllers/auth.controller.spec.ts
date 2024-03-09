@@ -5,7 +5,6 @@ import { UserRepositoryService } from "@/features/user/user-repository.service";
 import { UserFactoryService } from "@/features/user/user-factory.service";
 import { User } from "@/core/entities/user.entity";
 import { CreateUserDto, UserCredentialsDto } from "@/core/dtos/user.dto";
-import { Response } from "express";
 import { CryptoService } from "@/frameworks/auth-services/crypto/crypto.service";
 import { AuthTokenFactoryService } from "@/features/auth/auth-token-factory.service";
 import { IDataServices } from "@/core/abstracts/data-services.abstract";
@@ -82,14 +81,7 @@ describe("AuthController", () => {
       createUserDto.password = "password";
       createUserDto.username = "username";
 
-      const response: Record<string, unknown> = {
-        cookie: jest.fn(),
-      };
-
-      const user = await authController.register(
-        createUserDto,
-        response as unknown as Response,
-      );
+      const user = await authController.register(createUserDto);
       expect(user.user).toBe(exampleUser);
     });
   });
@@ -101,14 +93,7 @@ describe("AuthController", () => {
       createUserDto.email = "123123@gmail.com";
       createUserDto.password = "password123";
 
-      const response: Record<string, unknown> = {
-        cookie: jest.fn(),
-      };
-
-      const user = await authController.login(
-        createUserDto,
-        response as unknown as Response,
-      );
+      const user = await authController.login(createUserDto);
       expect(user.user).toBe(exampleUser);
     });
 
@@ -118,13 +103,9 @@ describe("AuthController", () => {
       createUserDto.email = "123123@gmail.com";
       createUserDto.password = "password1";
 
-      const response: Record<string, unknown> = {
-        cookie: jest.fn(),
-      };
-
-      expect(
-        authController.login(createUserDto, response as unknown as Response),
-      ).rejects.toThrow(CommonHttpException);
+      expect(authController.login(createUserDto)).rejects.toThrow(
+        CommonHttpException,
+      );
     });
   });
 });
