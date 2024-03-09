@@ -1,5 +1,6 @@
 import type {
   AccessTokenPayload,
+  ApiTokenPayload,
   RefreshTokenPayload,
 } from "@/frameworks/auth-services/jwt/types/token-payload.interface";
 import { Injectable } from "@nestjs/common";
@@ -11,6 +12,7 @@ import crypto from "node:crypto";
 export class AuthTokenFactoryService {
   private accessTokenExpiresIn: string;
   private refreshTokenExpiresIn: string;
+  private apiTokenSecret: string;
 
   constructor(
     private jwtService: JwtService,
@@ -22,6 +24,7 @@ export class AuthTokenFactoryService {
     this.refreshTokenExpiresIn = configService.get<string>(
       "JWT_REFRESH_TOKEN_EXPIRES_IN",
     );
+    this.apiTokenSecret = configService.get<string>("API_TOKEN_JWT_SECRET");
   }
 
   /**
@@ -56,6 +59,32 @@ export class AuthTokenFactoryService {
 
     const token = await this.jwtService.signAsync(payload, {
       expiresIn: this.refreshTokenExpiresIn,
+    });
+
+    return { token, jti: payload.jti };
+  }
+
+  /**
+   *
+   * @param id The user's id.
+   * @param scope Scopes available via this token.
+   * @param expiresIn Token expiration time.
+   * @returns
+   */
+  public async issueApiToken(
+    id: string,
+    scope: string[],
+    expiresIn: string,
+  ): Promise<{ token: string; jti: string }> {
+    const payload: ApiTokenPayload = {
+      sub: id,
+      scope: scope.join(" "),
+      jti: crypto.randomUUID(),
+    };
+
+    const token = await this.jwtService.signAsync(payload, {
+      expiresIn,
+      secret: this.apiTokenSecret,
     });
 
     return { token, jti: payload.jti };

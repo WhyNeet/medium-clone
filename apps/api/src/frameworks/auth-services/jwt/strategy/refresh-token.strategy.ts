@@ -1,26 +1,27 @@
 import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
-import { Strategy, WithSecretOrKey } from "passport-jwt";
+import { ExtractJwt, Strategy, WithSecretOrKey } from "passport-jwt";
 import { ConfigService } from "@nestjs/config";
-import { AccessTokenPayload } from "../types/token-payload.interface";
+import { RefreshTokenPayload } from "../types/token-payload.interface";
 import { CookiesExtractorService } from "../extractors/cookies-extractor.service";
 import { TokenType } from "../types/token-type.enum";
 import { TokenUser } from "../types/token-user.interface";
 import { TokenException } from "@/features/exception/exceptions/token.exception";
 
 @Injectable()
-export class AccessTokenStrategy extends PassportStrategy(
+export class RefreshTokenStrategy extends PassportStrategy(
   Strategy,
-  "access-token",
+  "refresh-token",
 ) {
   constructor(
     configService: ConfigService,
     cookiesExtractorService: CookiesExtractorService,
   ) {
     const options: WithSecretOrKey = {
-      jwtFromRequest: cookiesExtractorService.tokenExtractor(
-        TokenType.AccessToken,
-      ),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        cookiesExtractorService.tokenExtractor(TokenType.RefreshToken),
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ]),
       ignoreExpiration: false,
       algorithms: ["HS256"],
       secretOrKey: configService.get<string>("JWT_SECRET"),
@@ -29,10 +30,10 @@ export class AccessTokenStrategy extends PassportStrategy(
     super(options);
   }
 
-  public async validate(payload: AccessTokenPayload): Promise<TokenUser> {
-    if (typeof payload.sub !== "string" || typeof payload.rti !== "string")
-      throw new TokenException.InvalidAccessTokenProvided();
+  public async validate(payload: RefreshTokenPayload): Promise<TokenUser> {
+    if (typeof payload.sub !== "string" || typeof payload.jti !== "string")
+      throw new TokenException.InvalidRefreshTokenProvided();
 
-    return { id: payload.sub, jti: payload.rti };
+    return { id: payload.sub, jti: payload.jti };
   }
 }

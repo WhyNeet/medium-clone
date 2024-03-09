@@ -5,6 +5,7 @@ import { AuthServicesModule } from "@/frameworks/auth-services/auth-services.mod
 import { FeaturesModule } from "@/features/features.module";
 import { AuthController } from "./controllers/auth.controller";
 import { ExceptionHandlingModule } from "./frameworks/exception-handing/exception-handling.module";
+import { TokenController } from "./controllers/token.controller";
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { ExceptionHandlingModule } from "./frameworks/exception-handing/exceptio
     FeaturesModule,
     ExceptionHandlingModule,
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, TokenController],
   providers: [],
 })
 export class AppModule {}

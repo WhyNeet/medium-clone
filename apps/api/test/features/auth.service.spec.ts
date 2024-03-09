@@ -5,6 +5,7 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { Test } from "@nestjs/testing";
 import { createMock } from "@golevelup/ts-jest";
+import { IAuthScopesResolverService } from "@/core/abstracts/auth-scopes-resolver.abstract";
 
 describe("AuthService", () => {
   let authService: AuthService;
@@ -36,6 +37,12 @@ describe("AuthService", () => {
         {
           provide: JwtService,
           useValue: createMock<JwtService>(),
+        },
+        {
+          provide: IAuthScopesResolverService,
+          useValue: {
+            getAvailableScopes: jest.fn(),
+          },
         },
         ConfigService,
       ],
