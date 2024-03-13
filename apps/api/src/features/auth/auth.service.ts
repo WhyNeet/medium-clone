@@ -3,6 +3,8 @@ import { CryptoService } from "@/frameworks/auth-services/crypto/crypto.service"
 import { AuthTokenFactoryService } from "./auth-token-factory.service";
 import { IAuthScopesResolverService } from "@/core/abstracts/auth-scopes-resolver.abstract";
 import { TokenException } from "../exception/exceptions/token.exception";
+import { CookieOptions, Response } from "express";
+import { TokenType } from "@/core/entities/token.entity";
 
 @Injectable()
 export class AuthService {
@@ -32,15 +34,26 @@ export class AuthService {
    */
   public async issueTokenPair(
     id: string,
+    customExpClaim?: number,
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const { token: refreshToken, jti } =
-      await this.authTokenFactoryService.issueRefreshToken(id.toString());
+      await this.authTokenFactoryService.issueRefreshToken(id, customExpClaim);
     const accessToken = await this.authTokenFactoryService.issueAccessToken(
       id,
       jti,
     );
 
     return { accessToken, refreshToken };
+  }
+
+  public setCookies(res: Response, accessToken: string, refreshToken: string) {
+    const cookieOptions: CookieOptions = {
+      httpOnly: true,
+      sameSite: "lax",
+    };
+
+    res.cookie(TokenType.AccessToken, accessToken, cookieOptions);
+    res.cookie(TokenType.RefreshToken, refreshToken, cookieOptions);
   }
 
   /**
