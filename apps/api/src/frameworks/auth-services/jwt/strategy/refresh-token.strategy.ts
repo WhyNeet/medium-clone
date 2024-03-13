@@ -4,9 +4,9 @@ import { ExtractJwt, Strategy, WithSecretOrKey } from "passport-jwt";
 import { ConfigService } from "@nestjs/config";
 import { RefreshTokenPayload } from "../types/token-payload.interface";
 import { CookiesExtractorService } from "../extractors/cookies-extractor.service";
-import { TokenType } from "../types/token-type.enum";
 import { TokenUser } from "../types/token-user.interface";
 import { TokenException } from "@/features/exception/exceptions/token.exception";
+import { TokenType } from "@/core/entities/token.entity";
 
 @Injectable()
 export class RefreshTokenStrategy extends PassportStrategy(

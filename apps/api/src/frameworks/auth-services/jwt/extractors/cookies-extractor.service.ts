@@ -1,6 +1,6 @@
 import type { Request } from "express";
-import type { TokenType } from "../types/token-type.enum";
 import { Injectable } from "@nestjs/common";
+import { TokenType } from "@/core/entities/token.entity";
 
 @Injectable()
 export class CookiesExtractorService {

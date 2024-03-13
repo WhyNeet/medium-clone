@@ -1,4 +1,4 @@
-import { TokenType } from "@/frameworks/auth-services/jwt/types/token-type.enum";
+import { TokenType } from "@/core/entities/token.entity";
 import {
   CallHandler,
   ExecutionContext,
