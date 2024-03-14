@@ -13,6 +13,7 @@ import { MongoDataServices } from "./mongo-data-services.service";
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         uri: configService.get<string>("MONGODB_URI"),
+        dbName: "medium",
       }),
     }),
   ],
