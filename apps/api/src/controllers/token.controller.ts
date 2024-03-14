@@ -1,4 +1,4 @@
-import { CreateApiTokenDto } from "@/core/dtos/api-token.dto";
+import { CreateApiTokenDto } from "@/core/dtos/token.dto";
 import { AuthService } from "@/features/auth/auth.service";
 import { User } from "@/features/user/user.decorator";
 import { TokenGuard } from "@/frameworks/auth-services/jwt/guards/token.guard";

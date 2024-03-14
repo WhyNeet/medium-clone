@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { CryptoService } from "@/frameworks/auth-services/crypto/crypto.service";
-import { AuthTokenFactoryService } from "./auth-token-factory.service";
+import { TokenEncryptionService } from "../token/token-encryption.service";
 import { IAuthScopesResolverService } from "@/core/abstracts/auth-scopes-resolver.abstract";
 import { TokenException } from "../exception/exceptions/token.exception";
 import { CookieOptions, Response } from "express";
@@ -10,7 +10,7 @@ import { TokenType } from "@/core/entities/token.entity";
 export class AuthService {
   constructor(
     private cryptoService: CryptoService,
-    private authTokenFactoryService: AuthTokenFactoryService,
+    private tokenEncryptionService: TokenEncryptionService,
     private authScopesService: IAuthScopesResolverService,
   ) {}
 
@@ -37,8 +37,8 @@ export class AuthService {
     customExpClaim?: number,
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const { token: refreshToken, jti } =
-      await this.authTokenFactoryService.issueRefreshToken(id, customExpClaim);
-    const accessToken = await this.authTokenFactoryService.issueAccessToken(
+      await this.tokenEncryptionService.issueRefreshToken(id, customExpClaim);
+    const accessToken = await this.tokenEncryptionService.issueAccessToken(
       id,
       jti,
     );
@@ -78,7 +78,7 @@ export class AuthService {
         );
     });
 
-    const apiToken = await this.authTokenFactoryService.issueApiToken(
+    const apiToken = await this.tokenEncryptionService.issueApiToken(
       id,
       tokenScopes,
       expiresIn,

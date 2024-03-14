@@ -1,7 +1,9 @@
 export class Token {
   id: string;
 
-  type: string;
+  name?: string;
+
+  type: TokenType;
 }
 
 export const enum TokenType {

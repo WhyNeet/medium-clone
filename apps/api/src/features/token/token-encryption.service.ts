@@ -9,7 +9,7 @@ import { JwtService } from "@nestjs/jwt";
 import crypto from "node:crypto";
 
 @Injectable()
-export class AuthTokenFactoryService {
+export class TokenEncryptionService {
   private accessTokenExpiresIn: number;
   private refreshTokenExpiresIn: number;
   private apiTokenSecret: string;

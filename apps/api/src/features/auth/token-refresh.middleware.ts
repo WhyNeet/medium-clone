@@ -1,14 +1,14 @@
 import { TokenType } from "@/core/entities/token.entity";
 import { Injectable, NestMiddleware } from "@nestjs/common";
 import { NextFunction, Request, Response } from "express";
-import { AuthTokenFactoryService } from "./auth-token-factory.service";
+import { TokenEncryptionService } from "../token/token-encryption.service";
 import { AuthService } from "./auth.service";
 import { RefreshTokenPayload } from "@/frameworks/auth-services/jwt/types/token-payload.interface";
 
 @Injectable()
 export class TokenRefreshMiddleware implements NestMiddleware {
   constructor(
-    private authTokenFactoryService: AuthTokenFactoryService,
+    private tokenEncryptionService: TokenEncryptionService,
     private authService: AuthService,
   ) {}
 
@@ -17,10 +17,7 @@ export class TokenRefreshMiddleware implements NestMiddleware {
     if (!refreshToken) return next();
 
     const refreshTokenPayload =
-      await this.authTokenFactoryService.decodeRefreshToken(
-        refreshToken,
-        false,
-      );
+      await this.tokenEncryptionService.decodeRefreshToken(refreshToken, false);
 
     if (!refreshTokenPayload) return next();
 
@@ -31,7 +28,7 @@ export class TokenRefreshMiddleware implements NestMiddleware {
     }
 
     const accessTokenPayload =
-      await this.authTokenFactoryService.decodeAccessToken(accessToken);
+      await this.tokenEncryptionService.decodeAccessToken(accessToken);
     if (!accessTokenPayload)
       await this.refreshAccessToken(req, res, refreshTokenPayload);
 
