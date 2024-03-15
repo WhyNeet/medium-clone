@@ -6,9 +6,10 @@ import { UserFactoryService } from "@/features/user/user-factory.service";
 import { User } from "@/core/entities/user.entity";
 import { CreateUserDto, UserCredentialsDto } from "@/core/dtos/user.dto";
 import { CryptoService } from "@/frameworks/auth-services/crypto/crypto.service";
-import { AuthTokenFactoryService } from "@/features/auth/auth-token-factory.service";
+import { TokenEncryptionService } from "@/features/token/token-encryption.service";
 import { IDataServices } from "@/core/abstracts/data-services.abstract";
 import { CommonHttpException } from "@/frameworks/exception-handing/common/common-http.exception";
+import { Response } from "express";
 
 const exampleUser = new User();
 
@@ -33,6 +34,7 @@ describe("AuthController", () => {
             verifyUserPassword: jest
               .fn()
               .mockImplementation((password) => password === "password123"),
+            setCookies: jest.fn(),
           },
         },
         {
@@ -59,7 +61,7 @@ describe("AuthController", () => {
           },
         },
         {
-          provide: AuthTokenFactoryService,
+          provide: TokenEncryptionService,
           useValue: {},
         },
         {
@@ -81,7 +83,14 @@ describe("AuthController", () => {
       createUserDto.password = "password";
       createUserDto.username = "username";
 
-      const user = await authController.register(createUserDto);
+      const response: unknown = {
+        cookie: jest.fn(),
+      };
+
+      const user = await authController.register(
+        createUserDto,
+        response as Response,
+      );
       expect(user.user).toBe(exampleUser);
     });
   });
@@ -93,7 +102,14 @@ describe("AuthController", () => {
       createUserDto.email = "123123@gmail.com";
       createUserDto.password = "password123";
 
-      const user = await authController.login(createUserDto);
+      const response: unknown = {
+        cookie: jest.fn(),
+      };
+
+      const user = await authController.login(
+        createUserDto,
+        response as Response,
+      );
       expect(user.user).toBe(exampleUser);
     });
 
@@ -103,9 +119,13 @@ describe("AuthController", () => {
       createUserDto.email = "123123@gmail.com";
       createUserDto.password = "password1";
 
-      expect(authController.login(createUserDto)).rejects.toThrow(
-        CommonHttpException,
-      );
+      const response: unknown = {
+        cookie: jest.fn(),
+      };
+
+      expect(
+        authController.login(createUserDto, response as Response),
+      ).rejects.toThrow(CommonHttpException);
     });
   });
 });

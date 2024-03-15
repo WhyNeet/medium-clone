@@ -3,8 +3,9 @@ import { JwtModule } from "@nestjs/jwt";
 import { AccessTokenStrategy } from "./strategy/access-token.strategy";
 import { CookiesExtractorService } from "./extractors/cookies-extractor.service";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { RefreshTokenStrategy } from "./strategy/refresh-token.strategy";
 import { ApiTokenStrategy } from "./strategy/api-token.strategy";
+import { TokenService } from "./services/token.service";
+import { DataServicesFeatureModule } from "@/features/data-services/data-services-feature.module";
 
 @Module({
   imports: [
@@ -18,12 +19,13 @@ import { ApiTokenStrategy } from "./strategy/api-token.strategy";
         },
       }),
     }),
+    DataServicesFeatureModule,
   ],
   providers: [
     AccessTokenStrategy,
-    RefreshTokenStrategy,
     ApiTokenStrategy,
     CookiesExtractorService,
+    TokenService,
   ],
   exports: [JwtModule],
 })

@@ -7,6 +7,13 @@ import { HttpStatus } from "@nestjs/common";
 
 export class TokenException {
   @CommonException(
+    "Token not provided.",
+    "Please, provide an access token to access the requested resource.",
+    HttpStatus.UNAUTHORIZED,
+  )
+  public static readonly AccessTokenNotProvided: Exception;
+
+  @CommonException(
     "Invalid token provided.",
     "Please, provide a valid access token.",
     HttpStatus.UNAUTHORIZED,

@@ -1,15 +1,22 @@
 import { Injectable } from "@nestjs/common";
 import { CryptoService } from "@/frameworks/auth-services/crypto/crypto.service";
-import { AuthTokenFactoryService } from "./auth-token-factory.service";
+import { TokenEncryptionService } from "../token/token-encryption.service";
 import { IAuthScopesResolverService } from "@/core/abstracts/auth-scopes-resolver.abstract";
 import { TokenException } from "../exception/exceptions/token.exception";
+import { CookieOptions, Response } from "express";
+import { TokenType } from "@/core/entities/token.entity";
+import { TokenFactoryService } from "../token/token-factory.service";
+import { TokenRepositoryService } from "../data-services/token/token-repository.service";
+import { RefreshTokenPayload } from "@/frameworks/auth-services/jwt/types/token-payload.interface";
 
 @Injectable()
 export class AuthService {
   constructor(
     private cryptoService: CryptoService,
-    private authTokenFactoryService: AuthTokenFactoryService,
+    private tokenEncryptionService: TokenEncryptionService,
     private authScopesService: IAuthScopesResolverService,
+    private tokenFactoryService: TokenFactoryService,
+    private tokenRepositoryService: TokenRepositoryService,
   ) {}
 
   /**
@@ -33,14 +40,57 @@ export class AuthService {
   public async issueTokenPair(
     id: string,
   ): Promise<{ accessToken: string; refreshToken: string }> {
-    const { token: refreshToken, jti } =
-      await this.authTokenFactoryService.issueRefreshToken(id.toString());
-    const accessToken = await this.authTokenFactoryService.issueAccessToken(
+    const tokenEntity = this.tokenFactoryService.createNewRefreshToken();
+    const { id: jti } =
+      await this.tokenRepositoryService.createToken(tokenEntity);
+
+    const refreshToken = await this.tokenEncryptionService.issueRefreshToken(
+      id,
+      jti,
+    );
+    const accessToken = await this.tokenEncryptionService.issueAccessToken(
       id,
       jti,
     );
 
     return { accessToken, refreshToken };
+  }
+
+  public async refreshTokenPair(
+    refreshTokenPayload: RefreshTokenPayload,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
+    await this.tokenRepositoryService.deleteToken(refreshTokenPayload.jti);
+
+    const tokenEntity = this.tokenFactoryService.createNewRefreshToken();
+    const { id: jti } =
+      await this.tokenRepositoryService.createToken(tokenEntity);
+
+    const refreshToken = await this.tokenEncryptionService.issueRefreshToken(
+      refreshTokenPayload.sub,
+      jti,
+      refreshTokenPayload.exp,
+    );
+    const accessToken = await this.tokenEncryptionService.issueAccessToken(
+      refreshTokenPayload.sub,
+      jti,
+    );
+
+    return { accessToken, refreshToken };
+  }
+
+  public setCookies(res: Response, accessToken: string, refreshToken: string) {
+    const cookieOptions: CookieOptions = {
+      httpOnly: true,
+      sameSite: "lax",
+    };
+
+    res.cookie(TokenType.AccessToken, accessToken, cookieOptions);
+    res.cookie(TokenType.RefreshToken, refreshToken, cookieOptions);
+  }
+
+  public clearCookies(res: Response) {
+    res.clearCookie(TokenType.AccessToken);
+    res.clearCookie(TokenType.RefreshToken);
   }
 
   /**
@@ -52,9 +102,10 @@ export class AuthService {
    */
   public async issueApiToken(
     id: string,
+    name: string,
     scope: string,
     expiresIn: string,
-  ): Promise<{ token: string; jti: string }> {
+  ): Promise<string> {
     const availableScopes = this.authScopesService.getAvailableScopes();
     const tokenScopes = scope.split(" ");
 
@@ -65,8 +116,13 @@ export class AuthService {
         );
     });
 
-    const apiToken = await this.authTokenFactoryService.issueApiToken(
+    const apiTokenEntity = this.tokenFactoryService.createNewApiToken(name);
+    const { id: jti } =
+      await this.tokenRepositoryService.createToken(apiTokenEntity);
+
+    const apiToken = await this.tokenEncryptionService.issueApiToken(
       id,
+      jti,
       tokenScopes,
       expiresIn,
     );

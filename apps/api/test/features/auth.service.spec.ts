@@ -1,4 +1,4 @@
-import { AuthTokenFactoryService } from "@/features/auth/auth-token-factory.service";
+import { TokenEncryptionService } from "@/features/token/token-encryption.service";
 import { AuthService } from "@/features/auth/auth.service";
 import { CryptoService } from "@/frameworks/auth-services/crypto/crypto.service";
 import { ConfigService } from "@nestjs/config";
@@ -26,7 +26,7 @@ describe("AuthService", () => {
           },
         },
         {
-          provide: AuthTokenFactoryService,
+          provide: TokenEncryptionService,
           useValue: {
             issueAccessToken: jest.fn().mockResolvedValue("at"),
             issueRefreshToken: jest

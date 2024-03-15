@@ -1,6 +1,6 @@
 import { UserException } from "@/features/exception/exceptions/user.exception";
 import { UserFactoryService } from "@/features/user/user-factory.service";
-import { UserRepositoryService } from "@/features/user/user-repository.service";
+import { UserRepositoryService } from "@/features/data-services/user/user-repository.service";
 import { User } from "@/features/user/user.decorator";
 import { AccessTokenGuard } from "@/frameworks/auth-services/jwt/guards/access-token.guard";
 import { TokenUser } from "@/frameworks/auth-services/jwt/types/token-user.interface";
