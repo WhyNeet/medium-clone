@@ -6,6 +6,8 @@ import { JwtService } from "@nestjs/jwt";
 import { Test } from "@nestjs/testing";
 import { createMock } from "@golevelup/ts-jest";
 import { IAuthScopesResolverService } from "@/core/abstracts/auth-scopes-resolver.abstract";
+import { TokenFactoryService } from "@/features/token/token-factory.service";
+import { TokenRepositoryService } from "@/features/data-services/token/token-repository.service";
 
 describe("AuthService", () => {
   let authService: AuthService;
@@ -29,9 +31,19 @@ describe("AuthService", () => {
           provide: TokenEncryptionService,
           useValue: {
             issueAccessToken: jest.fn().mockResolvedValue("at"),
-            issueRefreshToken: jest
-              .fn()
-              .mockResolvedValue({ token: "rt", jti: "123123" }),
+            issueRefreshToken: jest.fn().mockResolvedValue("rt"),
+          },
+        },
+        {
+          provide: TokenFactoryService,
+          useValue: {
+            createNewRefreshToken: jest.fn(),
+          },
+        },
+        {
+          provide: TokenRepositoryService,
+          useValue: {
+            createToken: jest.fn().mockResolvedValue({ id: "rt" }),
           },
         },
         {

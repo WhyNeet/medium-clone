@@ -1,7 +1,7 @@
 import { Test } from "@nestjs/testing";
 import { AuthController } from "@/controllers/auth.controller";
 import { AuthService } from "@/features/auth/auth.service";
-import { UserRepositoryService } from "@/features/user/user-repository.service";
+import { UserRepositoryService } from "@/features/data-services/user/user-repository.service";
 import { UserFactoryService } from "@/features/user/user-factory.service";
 import { User } from "@/core/entities/user.entity";
 import { CreateUserDto, UserCredentialsDto } from "@/core/dtos/user.dto";
@@ -10,6 +10,7 @@ import { TokenEncryptionService } from "@/features/token/token-encryption.servic
 import { IDataServices } from "@/core/abstracts/data-services.abstract";
 import { CommonHttpException } from "@/frameworks/exception-handing/common/common-http.exception";
 import { Response } from "express";
+import { TokenRepositoryService } from "@/features/data-services/token/token-repository.service";
 
 const exampleUser = new User();
 
@@ -51,6 +52,10 @@ describe("AuthController", () => {
             createUser: jest.fn().mockResolvedValue(exampleUser),
             getUserByEmail: jest.fn().mockResolvedValue(exampleUser),
           },
+        },
+        {
+          provide: TokenRepositoryService,
+          useValue: {},
         },
         {
           provide: CryptoService,
