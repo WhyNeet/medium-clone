@@ -6,7 +6,15 @@ import { UserRepositoryService } from "@/features/data-services/user/user-reposi
 import { User } from "@/features/user/user.decorator";
 import { TokenGuard } from "@/frameworks/auth-services/jwt/guards/token.guard";
 import { TokenUser } from "@/frameworks/auth-services/jwt/types/token-user.interface";
-import { Body, Controller, Post, Res, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Res,
+  UseGuards,
+} from "@nestjs/common";
 import { Response } from "express";
 import { TokenRepositoryService } from "@/features/data-services/token/token-repository.service";
 
@@ -19,6 +27,7 @@ export class AuthController {
     private tokenRepositoryService: TokenRepositoryService,
   ) {}
 
+  @HttpCode(HttpStatus.OK)
   @Post("/login")
   public async login(
     @Body() userCredentialsDto: UserCredentialsDto,
@@ -48,6 +57,7 @@ export class AuthController {
     };
   }
 
+  @HttpCode(HttpStatus.OK)
   @Post("/register")
   public async register(
     @Body() createUserDto: CreateUserDto,
@@ -66,6 +76,7 @@ export class AuthController {
     };
   }
 
+  @HttpCode(HttpStatus.OK)
   @UseGuards(TokenGuard)
   @Post("/logout")
   public async logout(

@@ -3,12 +3,20 @@ import { AuthService } from "@/features/auth/auth.service";
 import { User } from "@/features/user/user.decorator";
 import { TokenGuard } from "@/frameworks/auth-services/jwt/guards/token.guard";
 import { TokenUser } from "@/frameworks/auth-services/jwt/types/token-user.interface";
-import { Body, Controller, Post, UseGuards } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from "@nestjs/common";
 
 @Controller("/token")
 export class TokenController {
   constructor(private authService: AuthService) {}
 
+  @HttpCode(HttpStatus.CREATED)
   @UseGuards(TokenGuard)
   @Post("/api-token")
   public async createApiToken(
