@@ -80,7 +80,7 @@ export class TokenEncryptionService {
     id: string,
     jti: string,
     scopes: string[],
-    expiresIn: string,
+    expiresIn: number,
   ): Promise<string> {
     const payload: ApiTokenPayload = {
       sub: id,

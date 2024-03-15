@@ -21,8 +21,18 @@ export class TokenFactoryService {
     return token;
   }
 
-  public createNewApiToken(name: string): Token {
+  /**
+   *
+   * @param name API token name.
+   * @param expiresIn Number of seconds after which token expires.
+   * @returns
+   */
+  public createNewApiToken(name: string, expiresIn: number): Token {
     const token = this.createNewToken(TokenType.ApiToken, name);
+
+    const expireAt = new Date(new Date().getTime() + expiresIn * 1000);
+
+    token.expireAt = expireAt;
 
     return token;
   }
