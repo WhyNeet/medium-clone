@@ -5,6 +5,9 @@ import { IAuthScopesResolverService } from "@/core/abstracts/auth-scopes-resolve
 import { TokenException } from "../exception/exceptions/token.exception";
 import { CookieOptions, Response } from "express";
 import { TokenType } from "@/core/entities/token.entity";
+import { TokenFactoryService } from "../token/token-factory.service";
+import { TokenRepositoryService } from "../data-services/token/token-repository.service";
+import { RefreshTokenPayload } from "@/frameworks/auth-services/jwt/types/token-payload.interface";
 
 @Injectable()
 export class AuthService {
@@ -12,6 +15,8 @@ export class AuthService {
     private cryptoService: CryptoService,
     private tokenEncryptionService: TokenEncryptionService,
     private authScopesService: IAuthScopesResolverService,
+    private tokenFactoryService: TokenFactoryService,
+    private tokenRepositoryService: TokenRepositoryService,
   ) {}
 
   /**
@@ -34,12 +39,39 @@ export class AuthService {
    */
   public async issueTokenPair(
     id: string,
-    customExpClaim?: number,
   ): Promise<{ accessToken: string; refreshToken: string }> {
-    const { token: refreshToken, jti } =
-      await this.tokenEncryptionService.issueRefreshToken(id, customExpClaim);
+    const tokenEntity = this.tokenFactoryService.createNewRefreshToken();
+    const { id: jti } =
+      await this.tokenRepositoryService.createToken(tokenEntity);
+
+    const refreshToken = await this.tokenEncryptionService.issueRefreshToken(
+      id,
+      jti,
+    );
     const accessToken = await this.tokenEncryptionService.issueAccessToken(
       id,
+      jti,
+    );
+
+    return { accessToken, refreshToken };
+  }
+
+  public async refreshTokenPair(
+    refreshTokenPayload: RefreshTokenPayload,
+  ): Promise<{ accessToken: string; refreshToken: string }> {
+    await this.tokenRepositoryService.deleteToken(refreshTokenPayload.jti);
+
+    const tokenEntity = this.tokenFactoryService.createNewRefreshToken();
+    const { id: jti } =
+      await this.tokenRepositoryService.createToken(tokenEntity);
+
+    const refreshToken = await this.tokenEncryptionService.issueRefreshToken(
+      refreshTokenPayload.sub,
+      jti,
+      refreshTokenPayload.exp,
+    );
+    const accessToken = await this.tokenEncryptionService.issueAccessToken(
+      refreshTokenPayload.sub,
       jti,
     );
 
@@ -56,6 +88,11 @@ export class AuthService {
     res.cookie(TokenType.RefreshToken, refreshToken, cookieOptions);
   }
 
+  public clearCookies(res: Response) {
+    res.clearCookie(TokenType.AccessToken);
+    res.clearCookie(TokenType.RefreshToken);
+  }
+
   /**
    *
    * @param id The user's id.
@@ -65,9 +102,10 @@ export class AuthService {
    */
   public async issueApiToken(
     id: string,
+    name: string,
     scope: string,
     expiresIn: string,
-  ): Promise<{ token: string; jti: string }> {
+  ): Promise<string> {
     const availableScopes = this.authScopesService.getAvailableScopes();
     const tokenScopes = scope.split(" ");
 
@@ -78,8 +116,13 @@ export class AuthService {
         );
     });
 
+    const apiTokenEntity = this.tokenFactoryService.createNewApiToken(name);
+    const { id: jti } =
+      await this.tokenRepositoryService.createToken(apiTokenEntity);
+
     const apiToken = await this.tokenEncryptionService.issueApiToken(
       id,
+      jti,
       tokenScopes,
       expiresIn,
     );

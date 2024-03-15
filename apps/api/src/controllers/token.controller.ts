@@ -15,14 +15,13 @@ export class TokenController {
     @User() user: TokenUser,
     @Body() createApiTokenDto: CreateApiTokenDto,
   ) {
-    const { token, jti } = await this.authService.issueApiToken(
+    const apiToken = await this.authService.issueApiToken(
       user.id,
+      createApiTokenDto.name,
       createApiTokenDto.scope,
       createApiTokenDto.expiresIn,
     );
 
-    // TODO: store token in a database
-
-    return { id: jti, token };
+    return { token: apiToken };
   }
 }

@@ -11,6 +11,7 @@ import { AuthScopesModule } from "@/frameworks/auth-services/scopes/auth-scopes.
 import { TokenRefreshMiddleware } from "./token-refresh.middleware";
 import { TokenFeatureModule } from "../token/token-feature.module";
 import { JwtAuthServicesModule } from "@/frameworks/auth-services/jwt/jwt-auth-services.module";
+import { DataServicesFeatureModule } from "../data-services/data-services-feature.module";
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { JwtAuthServicesModule } from "@/frameworks/auth-services/jwt/jwt-auth-s
     TokenFeatureModule,
     AuthScopesModule,
     JwtAuthServicesModule,
+    DataServicesFeatureModule,
   ],
   providers: [AuthService],
   exports: [AuthService],

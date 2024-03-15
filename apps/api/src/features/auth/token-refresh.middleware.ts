@@ -2,7 +2,7 @@ import { TokenType } from "@/core/entities/token.entity";
 import { Injectable, NestMiddleware } from "@nestjs/common";
 import { NextFunction, Request, Response } from "express";
 import { TokenEncryptionService } from "../token/token-encryption.service";
-import { AuthService } from "./auth.service";
+import { AuthService } from "../auth/auth.service";
 import { RefreshTokenPayload } from "@/frameworks/auth-services/jwt/types/token-payload.interface";
 
 @Injectable()
@@ -40,10 +40,8 @@ export class TokenRefreshMiddleware implements NestMiddleware {
     res: Response,
     refreshTokenPayload: RefreshTokenPayload,
   ) {
-    const { accessToken, refreshToken } = await this.authService.issueTokenPair(
-      refreshTokenPayload.sub,
-      refreshTokenPayload.exp,
-    );
+    const { accessToken, refreshToken } =
+      await this.authService.refreshTokenPair(refreshTokenPayload);
 
     req.cookies[TokenType.AccessToken] = accessToken;
     req.cookies[TokenType.RefreshToken] = refreshToken;

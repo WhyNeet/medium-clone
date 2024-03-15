@@ -6,6 +6,9 @@ import { FeaturesModule } from "@/features/features.module";
 import { AuthController } from "./controllers/auth.controller";
 import { ExceptionHandlingModule } from "./frameworks/exception-handing/exception-handling.module";
 import { TokenController } from "./controllers/token.controller";
+import { TokenFeatureModule } from "./features/token/token-feature.module";
+import { AuthFeatureModule } from "./features/auth/auth-feature.module";
+import { DataServicesFeatureModule } from "./features/data-services/data-services-feature.module";
 
 @Module({
   imports: [
@@ -14,6 +17,9 @@ import { TokenController } from "./controllers/token.controller";
     AuthServicesModule,
     FeaturesModule,
     ExceptionHandlingModule,
+    TokenFeatureModule,
+    AuthFeatureModule,
+    DataServicesFeatureModule,
   ],
   controllers: [AuthController, TokenController],
   providers: [],

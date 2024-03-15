@@ -10,11 +10,11 @@ export class TokenRepositoryService {
     return this.dataServices.tokens.create(token);
   }
 
-  public async getTokenById(id: string): Promise<Token> {
+  public async getTokenById(id: string): Promise<Token | null> {
     return this.dataServices.tokens.getById(id);
   }
 
-  public async deleteToken(id: string): Promise<Token> {
+  public async deleteToken(id: string): Promise<Token | null> {
     return this.dataServices.tokens.delete(id);
   }
 }

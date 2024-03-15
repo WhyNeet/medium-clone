@@ -4,6 +4,8 @@ export class Token {
   name?: string;
 
   type: TokenType;
+
+  expireAt?: Date;
 }
 
 export const enum TokenType {

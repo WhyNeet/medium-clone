@@ -6,7 +6,6 @@ import type {
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
-import crypto from "node:crypto";
 
 @Injectable()
 export class TokenEncryptionService {
@@ -49,15 +48,16 @@ export class TokenEncryptionService {
   /**
    *
    * @param {string} id The user's id.
-   * @returns A refresh token and its id.
+   * @returns A refresh token.
    */
   public async issueRefreshToken(
     id: string,
+    jti: string,
     customExpClaim?: number,
-  ): Promise<{ token: string; jti: string }> {
+  ): Promise<string> {
     const payload: RefreshTokenPayload = {
       sub: id,
-      jti: crypto.randomUUID(),
+      jti,
       exp: Number(
         customExpClaim ??
           (new Date().getTime() / 1000 + this.refreshTokenExpiresIn).toFixed(0),
@@ -66,25 +66,26 @@ export class TokenEncryptionService {
 
     const token = await this.jwtService.signAsync(payload);
 
-    return { token, jti: payload.jti };
+    return token;
   }
 
   /**
    *
    * @param id The user's id.
-   * @param scope Scopes available via this token.
+   * @param scopes Scopes available via this token.
    * @param expiresIn Token expiration time.
-   * @returns
+   * @returns An API token.
    */
   public async issueApiToken(
     id: string,
-    scope: string[],
+    jti: string,
+    scopes: string[],
     expiresIn: string,
-  ): Promise<{ token: string; jti: string }> {
+  ): Promise<string> {
     const payload: ApiTokenPayload = {
       sub: id,
-      scope: scope.join(" "),
-      jti: crypto.randomUUID(),
+      scope: scopes.join(" "),
+      jti,
     };
 
     const token = await this.jwtService.signAsync(payload, {
@@ -92,7 +93,7 @@ export class TokenEncryptionService {
       secret: this.apiTokenSecret,
     });
 
-    return { token, jti: payload.jti };
+    return token;
   }
 
   /**

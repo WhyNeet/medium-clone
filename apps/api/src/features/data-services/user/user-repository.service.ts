@@ -1,5 +1,5 @@
 import type { User } from "@/core/entities/user.entity";
-import { UserFactoryService } from "./user-factory.service";
+import { UserFactoryService } from "../../user/user-factory.service";
 import { IDataServices } from "@/core/abstracts/data-services.abstract";
 import { Injectable } from "@nestjs/common";
 import { CreateUserDto } from "@/core/dtos/user.dto";
