@@ -14,8 +14,7 @@ export class TokenGuard extends AuthGuard(["api-token", "access-token"]) {
     status?: unknown,
   ): TUser {
     // No errors occured
-    if (!info?.length)
-      return super.handleRequest(err, user, info, context, status);
+    if (user) return super.handleRequest(err, user, info, context, status);
 
     const ctx = context.switchToHttp();
     const request = ctx.getRequest<Request>();

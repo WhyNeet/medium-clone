@@ -104,7 +104,7 @@ export class AuthService {
     id: string,
     name: string,
     scope: string,
-    expiresIn: string,
+    expiresIn: number,
   ): Promise<string> {
     const availableScopes = this.authScopesService.getAvailableScopes();
     const tokenScopes = scope.split(" ");
@@ -116,7 +116,10 @@ export class AuthService {
         );
     });
 
-    const apiTokenEntity = this.tokenFactoryService.createNewApiToken(name);
+    const apiTokenEntity = this.tokenFactoryService.createNewApiToken(
+      name,
+      expiresIn,
+    );
     const { id: jti } =
       await this.tokenRepositoryService.createToken(apiTokenEntity);
 

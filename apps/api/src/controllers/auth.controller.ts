@@ -4,7 +4,6 @@ import { AuthException } from "@/features/exception/exceptions/auth.exception";
 import { UserFactoryService } from "@/features/user/user-factory.service";
 import { UserRepositoryService } from "@/features/data-services/user/user-repository.service";
 import { User } from "@/features/user/user.decorator";
-import { TokenGuard } from "@/frameworks/auth-services/jwt/guards/token.guard";
 import { TokenUser } from "@/frameworks/auth-services/jwt/types/token-user.interface";
 import {
   Body,
@@ -17,6 +16,7 @@ import {
 } from "@nestjs/common";
 import { Response } from "express";
 import { TokenRepositoryService } from "@/features/data-services/token/token-repository.service";
+import { AccessTokenGuard } from "@/frameworks/auth-services/jwt/guards/access-token.guard";
 
 @Controller("/auth")
 export class AuthController {
@@ -77,7 +77,7 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @UseGuards(TokenGuard)
+  @UseGuards(AccessTokenGuard)
   @Post("/logout")
   public async logout(
     @User() user: TokenUser,
