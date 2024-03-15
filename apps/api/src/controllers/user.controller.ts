@@ -2,9 +2,9 @@ import { UserException } from "@/features/exception/exceptions/user.exception";
 import { UserFactoryService } from "@/features/user/user-factory.service";
 import { UserRepositoryService } from "@/features/data-services/user/user-repository.service";
 import { User } from "@/features/user/user.decorator";
-import { AccessTokenGuard } from "@/frameworks/auth-services/jwt/guards/access-token.guard";
 import { TokenUser } from "@/frameworks/auth-services/jwt/types/token-user.interface";
 import { Controller, Get, Param, UseGuards } from "@nestjs/common";
+import { TokenGuard } from "@/frameworks/auth-services/jwt/guards/token.guard";
 
 @Controller("/users")
 export class UserController {
@@ -13,7 +13,7 @@ export class UserController {
     private userFactoryService: UserFactoryService,
   ) {}
 
-  @UseGuards(AccessTokenGuard)
+  @UseGuards(TokenGuard)
   @Get("/me")
   public async me(@User() user: TokenUser) {
     const dbUser = await this.userRepositoryService.getUserById(user.id);
