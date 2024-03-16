@@ -14,10 +14,18 @@ import { MongoDataServices } from "./mongo-data-services.service";
 		MongooseModule.forRootAsync({
 			imports: [ConfigModule],
 			inject: [ConfigService],
-			useFactory: (configService: ConfigService) => ({
-				uri: configService.get<string>("MONGODB_URI"),
-				dbName: "medium",
-			}),
+			useFactory: (configService: ConfigService) => {
+				return {
+					uri: `mongodb://${configService.get<string>(
+						"mongodb.host",
+					)}:${configService.get<string>("mongodb.port")}`,
+					dbName: "medium",
+					auth: {
+						username: configService.get<string>("mongodb.auth.username"),
+						password: configService.get<string>("mongodb.auth.password"),
+					},
+				};
+			},
 		}),
 	],
 	providers: [

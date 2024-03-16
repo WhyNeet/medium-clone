@@ -6,7 +6,7 @@ import { AuthScopesModule } from "./scopes/auth-scopes.module";
 
 @Module({
 	imports: [
-		PassportModule.register({ defaultStrategy: "jwt" }),
+		PassportModule,
 		JwtAuthServicesModule,
 		CryptoModule,
 		AuthScopesModule,

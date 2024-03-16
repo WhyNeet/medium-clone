@@ -11,6 +11,10 @@ import { JwtService } from "@nestjs/jwt";
 export class TokenEncryptionService {
 	private accessTokenExpiresIn: number;
 	private refreshTokenExpiresIn: number;
+	private apiTokenDefaultExpiresIn: number;
+
+	private accessTokenSecret: string;
+	private refreshTokenSecret: string;
 	private apiTokenSecret: string;
 
 	constructor(
@@ -18,13 +22,23 @@ export class TokenEncryptionService {
 		private configService: ConfigService,
 	) {
 		this.accessTokenExpiresIn = Number(
-			this.configService.get<string>("JWT_ACCESS_TOKEN_EXPIRES_IN"),
+			this.configService.get<string>("tokens.accessToken.expiration"),
 		);
 		this.refreshTokenExpiresIn = Number(
-			this.configService.get<string>("JWT_REFRESH_TOKEN_EXPIRES_IN"),
+			this.configService.get<string>("tokens.refreshToken.expiration"),
+		);
+		this.apiTokenDefaultExpiresIn = Number(
+			this.configService.get<string>("tokens.apiToken.expiration"),
+		);
+
+		this.accessTokenSecret = this.configService.get<string>(
+			"tokens.accessToken.secret",
+		);
+		this.refreshTokenSecret = this.configService.get<string>(
+			"tokens.refreshToken.secret",
 		);
 		this.apiTokenSecret = this.configService.get<string>(
-			"API_TOKEN_JWT_SECRET",
+			"tokens.apiToken.secret",
 		);
 	}
 
@@ -42,6 +56,7 @@ export class TokenEncryptionService {
 
 		return this.jwtService.signAsync(payload, {
 			expiresIn: this.accessTokenExpiresIn,
+			secret: this.accessTokenSecret,
 		});
 	}
 
@@ -64,7 +79,9 @@ export class TokenEncryptionService {
 			),
 		};
 
-		const token = await this.jwtService.signAsync(payload);
+		const token = await this.jwtService.signAsync(payload, {
+			secret: this.refreshTokenSecret,
+		});
 
 		return token;
 	}
@@ -80,7 +97,7 @@ export class TokenEncryptionService {
 		id: string,
 		jti: string,
 		scopes: string[],
-		expiresIn: number,
+		expiresIn?: number,
 	): Promise<string> {
 		const payload: ApiTokenPayload = {
 			sub: id,
@@ -89,7 +106,7 @@ export class TokenEncryptionService {
 		};
 
 		const token = await this.jwtService.signAsync(payload, {
-			expiresIn,
+			expiresIn: expiresIn ?? this.apiTokenDefaultExpiresIn,
 			secret: this.apiTokenSecret,
 		});
 

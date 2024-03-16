@@ -19,7 +19,7 @@ export class ApiTokenStrategy extends PassportStrategy(Strategy, "api-token") {
 			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 			ignoreExpiration: false,
 			algorithms: ["HS256"],
-			secretOrKey: configService.get<string>("API_TOKEN_JWT_SECRET"),
+			secretOrKey: configService.get<string>("tokens.apiToken.secret"),
 			passReqToCallback: true,
 		};
 

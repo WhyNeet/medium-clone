@@ -25,7 +25,7 @@ export class AccessTokenStrategy extends PassportStrategy(
 			),
 			ignoreExpiration: false,
 			algorithms: ["HS256"],
-			secretOrKey: configService.get<string>("JWT_SECRET"),
+			secretOrKey: configService.get<string>("tokens.accessToken.secret"),
 		};
 
 		super(options);

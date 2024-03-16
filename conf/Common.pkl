@@ -1,0 +1,35 @@
+module dev.whyneet.`medium-clone`.Common
+
+class MongoConnectionProperties {
+  host: String
+  port: UInt16(isBetween(1024, 49151))
+
+  auth: MongoConnectionAuthProperties
+}
+
+class MongoConnectionAuthProperties {
+  username: String
+  password: String
+}
+
+class TokensProperties {
+  accessToken: TokenProperties
+  refreshToken: TokenProperties
+  apiToken: TokenProperties
+}
+
+class TokenProperties {
+  secret: String
+
+  // number of seconds after which tiken expires
+  expiration: UInt32    
+}
+
+class TokenPropertiesFactory {
+  function create(tokenSecret: String, tokenExpiration: Duration): TokenProperties = new TokenProperties {
+    secret = tokenSecret
+    expiration = (tokenExpiration).toUnit("s").value
+  }
+}
+
+tokenPropertiesFactory = new TokenPropertiesFactory {}

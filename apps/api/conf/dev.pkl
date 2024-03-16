@@ -1,0 +1,22 @@
+module dev.whyneet.`medium-clone`.api
+
+import ".../conf/Common.pkl"
+
+mongodb = new Common.MongoConnectionProperties {
+  host = "localhost"
+  port = 27017
+
+  auth = new Common.MongoConnectionAuthProperties {
+    username = "root"
+    password = "root"
+  }
+}
+
+tokens = new Common.TokensProperties {
+  accessToken = Common.tokenPropertiesFactory.create("access_token_secret", 2.min)
+
+  refreshToken = Common.tokenPropertiesFactory.create("refresh_token_secret", 120.d)
+
+  // default expiration for an API token is 120 days
+  apiToken = Common.tokenPropertiesFactory.create("api_token_secret", 120.d)
+}
