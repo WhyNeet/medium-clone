@@ -1,7 +1,7 @@
 import { CreateApiTokenDto } from "@/core/dtos/token.dto";
 import { AuthService } from "@/features/auth/auth.service";
 import { User } from "@/features/user/user.decorator";
-import { TokenGuard } from "@/frameworks/auth-services/jwt/guards/token.guard";
+import { AccessTokenGuard } from "@/frameworks/auth-services/jwt/guards/access-token.guard";
 import { TokenUser } from "@/frameworks/auth-services/jwt/types/token-user.interface";
 import {
 	Body,
@@ -17,7 +17,7 @@ export class TokenController {
 	constructor(private authService: AuthService) {}
 
 	@HttpCode(HttpStatus.CREATED)
-	@UseGuards(TokenGuard)
+	@UseGuards(AccessTokenGuard)
 	@Post("/api-token")
 	public async createApiToken(
 		@User() user: TokenUser,
