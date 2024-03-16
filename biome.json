@@ -12,6 +12,9 @@
 			},
 			"style": {
 				"useImportType": "off"
+			},
+			"correctness": {
+				"noUnusedImports": "error"
 			}
 		},
 		"ignore": ["*/dist"]
