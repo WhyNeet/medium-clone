@@ -1,36 +1,32 @@
 {
-  "name": "medium",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "pnpm api test",
-    "lint": "eslint .",
-    "format": "prettier --write .",
-    "prepare": "husky",
-    "commitlint": "commitlint --edit",
-    "api": "pnpm --filter api"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@biomejs/biome": "1.6.1",
-    "@commitlint/cli": "^19.0.3",
-    "@commitlint/config-conventional": "^19.0.3",
-    "@typescript-eslint/eslint-plugin": "^7.1.0",
-    "@typescript-eslint/parser": "^7.1.0",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.1.3",
-    "husky": "^9.0.11",
-    "lint-staged": "^15.2.2",
-    "prettier": "^3.2.5"
-  },
-  "lint-staged": {
-    "**/*.{js,ts,tsx}": [
-      "eslint --fix"
-    ],
-    "**/*": "prettier --write --ignore-unknown"
-  }
+	"name": "medium",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "pnpm api test",
+		"lint": "biome lint --apply .",
+		"format": "biome format --write .",
+		"check": "biome check --apply --files-ignore-unknown=true .",
+		"check-unsafe": "biome check --apply-unsafe --files-ignore-unknown=true .",
+		"prepare": "husky",
+		"commitlint": "commitlint --edit",
+		"api": "pnpm --filter api"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"@biomejs/biome": "1.6.1",
+		"@commitlint/cli": "^19.0.3",
+		"@commitlint/config-conventional": "^19.0.3",
+		"@typescript-eslint/eslint-plugin": "^7.1.0",
+		"@typescript-eslint/parser": "^7.1.0",
+		"husky": "^9.0.11",
+		"lint-staged": "^15.2.2"
+	},
+	"lint-staged": {
+		"**/*.{js,ts,tsx}": ["biome check --apply"],
+		"**/*": "biome check --apply --files-ignore-unknown=true"
+	}
 }
