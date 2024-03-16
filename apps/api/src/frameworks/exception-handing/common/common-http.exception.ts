@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus } from "@nestjs/common";
 
 export class CommonHttpException extends HttpException {
-  constructor(type: string, title: string, detail: string, status: HttpStatus) {
-    super({ type, title, detail }, status);
-  }
+	constructor(type: string, title: string, detail: string, status: HttpStatus) {
+		super({ type, title, detail }, status);
+	}
 
-  public getResponseError(): object {
-    return this.getResponse() as object;
-  }
+	public getResponseError(): object {
+		return this.getResponse() as object;
+	}
 }

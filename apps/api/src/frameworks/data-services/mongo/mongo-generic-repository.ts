@@ -2,35 +2,35 @@ import type { IGenericRepository } from "@/core/abstracts/generic-repository.abs
 import type { Model } from "mongoose";
 
 export class MongoGenericRepository<Entity>
-  implements IGenericRepository<Entity>
+	implements IGenericRepository<Entity>
 {
-  private model: Model<Entity>;
+	private model: Model<Entity>;
 
-  constructor(model: Model<Entity>) {
-    this.model = model;
-  }
+	constructor(model: Model<Entity>) {
+		this.model = model;
+	}
 
-  create(entity: Entity): Promise<Entity> {
-    return this.model.create(entity);
-  }
+	create(entity: Entity): Promise<Entity> {
+		return this.model.create(entity);
+	}
 
-  getAll(): Promise<Entity[]> {
-    return this.model.find().exec();
-  }
+	getAll(): Promise<Entity[]> {
+		return this.model.find().exec();
+	}
 
-  getById(id: string): Promise<Entity | null> {
-    return this.model.findById(id).exec();
-  }
+	getById(id: string): Promise<Entity | null> {
+		return this.model.findById(id).exec();
+	}
 
-  get(filter: Record<string, string>): Promise<Entity | null> {
-    return this.model.findOne(filter).exec();
-  }
+	get(filter: Record<string, string>): Promise<Entity | null> {
+		return this.model.findOne(filter).exec();
+	}
 
-  update(id: string, entity: Entity): Promise<Entity | null> {
-    return this.model.findByIdAndUpdate(id, entity).exec();
-  }
+	update(id: string, entity: Entity): Promise<Entity | null> {
+		return this.model.findByIdAndUpdate(id, entity).exec();
+	}
 
-  delete(id: string): Promise<Entity | null> {
-    return this.model.findByIdAndDelete(id).exec();
-  }
+	delete(id: string): Promise<Entity | null> {
+		return this.model.findByIdAndDelete(id).exec();
+	}
 }

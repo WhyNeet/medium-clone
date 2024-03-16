@@ -6,22 +6,22 @@ import { Request } from "express";
 
 @Injectable()
 export class AccessTokenGuard extends AuthGuard("access-token") {
-  public handleRequest<TUser = unknown>(
-    err: unknown,
-    user: unknown,
-    info: unknown,
-    context: ExecutionContext,
-    status?: unknown,
-  ): TUser {
-    // No errors occured
-    if (user) return super.handleRequest(err, user, info, context, status);
+	public handleRequest<TUser = unknown>(
+		err: unknown,
+		user: unknown,
+		info: unknown,
+		context: ExecutionContext,
+		status?: unknown,
+	): TUser {
+		// No errors occured
+		if (user) return super.handleRequest(err, user, info, context, status);
 
-    const ctx = context.switchToHttp();
-    const request = ctx.getRequest<Request>();
+		const ctx = context.switchToHttp();
+		const request = ctx.getRequest<Request>();
 
-    const isTokenProvided = !!request.cookies[TokenType.AccessToken];
+		const isTokenProvided = !!request.cookies[TokenType.AccessToken];
 
-    if (!isTokenProvided) throw new TokenException.AccessTokenNotProvided();
-    else throw new TokenException.InvalidAccessTokenProvided();
-  }
+		if (!isTokenProvided) throw new TokenException.AccessTokenNotProvided();
+		throw new TokenException.InvalidAccessTokenProvided();
+	}
 }

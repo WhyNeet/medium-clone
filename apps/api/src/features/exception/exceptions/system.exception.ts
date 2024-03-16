@@ -3,10 +3,10 @@ import type { CustomizableException } from "@/frameworks/exception-handing/types
 import { HttpStatus } from "@nestjs/common";
 
 export class SystemException {
-  @CommonException(
-    "An internal error occured.",
-    "Please, try again later.",
-    HttpStatus.INTERNAL_SERVER_ERROR,
-  )
-  public static readonly InternalException: CustomizableException;
+	@CommonException(
+		"An internal error occured.",
+		"Please, try again later.",
+		HttpStatus.INTERNAL_SERVER_ERROR,
+	)
+	public static readonly InternalException: CustomizableException;
 }

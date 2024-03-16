@@ -1,12 +1,12 @@
-import { Module } from "@nestjs/common";
+import { JwtAuthServicesModule } from "@/frameworks/auth-services/jwt/jwt-auth-services.module";
 import { DataServicesModule } from "@/frameworks/data-services/data-services.module";
+import { Module } from "@nestjs/common";
 import { TokenEncryptionService } from "./token-encryption.service";
 import { TokenFactoryService } from "./token-factory.service";
-import { JwtAuthServicesModule } from "@/frameworks/auth-services/jwt/jwt-auth-services.module";
 
 @Module({
-  imports: [DataServicesModule, JwtAuthServicesModule],
-  providers: [TokenEncryptionService, TokenFactoryService],
-  exports: [TokenEncryptionService, TokenFactoryService],
+	imports: [DataServicesModule, JwtAuthServicesModule],
+	providers: [TokenEncryptionService, TokenFactoryService],
+	exports: [TokenEncryptionService, TokenFactoryService],
 })
 export class TokenFeatureModule {}

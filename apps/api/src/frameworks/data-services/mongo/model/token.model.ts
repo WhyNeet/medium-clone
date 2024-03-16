@@ -6,16 +6,16 @@ export type TokenDocument = HydratedDocument<Token>;
 
 @Schema({ timestamps: { createdAt: true } })
 export class Token {
-  id: string;
+	id: string;
 
-  @Prop({ required: false })
-  name: string;
+	@Prop({ required: false })
+	name: string;
 
-  @Prop({ required: true, type: String })
-  type: TokenType;
+	@Prop({ required: true, type: String })
+	type: TokenType;
 
-  @Prop({ required: true, type: Date, expires: 0 })
-  expireAt: Date;
+	@Prop({ required: true, type: Date, expires: 0 })
+	expireAt: Date;
 }
 
 export const TokenSchema = SchemaFactory.createForClass(Token);

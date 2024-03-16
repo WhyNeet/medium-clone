@@ -2,7 +2,7 @@ import { MongoDataServicesModule } from "@/frameworks/data-services/mongo/mongo-
 import { Module } from "@nestjs/common";
 
 @Module({
-  imports: [MongoDataServicesModule],
-  exports: [MongoDataServicesModule],
+	imports: [MongoDataServicesModule],
+	exports: [MongoDataServicesModule],
 })
 export class DataServicesModule {}

@@ -27,9 +27,9 @@ export class TokenGuard extends AuthGuard(["api-token", "access-token"]) {
 		// The exception is related to API token since it is checked before access token
 		if (isApiTokenAuth) throw new TokenException.InvalidApiTokenProvided();
 		// Otherwise, if access token was not provided, throw the corresponding error
-		else if (!request.cookies[TokenType.AccessToken])
+		if (!request.cookies[TokenType.AccessToken])
 			throw new TokenException.AccessTokenNotProvided();
 		// If it is provided and API token is not provided, the access token is invalid
-		else throw new TokenException.InvalidAccessTokenProvided();
+		throw new TokenException.InvalidAccessTokenProvided();
 	}
 }

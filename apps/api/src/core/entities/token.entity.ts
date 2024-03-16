@@ -1,15 +1,15 @@
 export class Token {
-  id: string;
+	id: string;
 
-  name?: string;
+	name?: string;
 
-  type: TokenType;
+	type: TokenType;
 
-  expireAt?: Date;
+	expireAt?: Date;
 }
 
-export const enum TokenType {
-  AccessToken = "access_token",
-  RefreshToken = "refresh_token",
-  ApiToken = "api_token",
+export enum TokenType {
+	AccessToken = "access_token",
+	RefreshToken = "refresh_token",
+	ApiToken = "api_token",
 }

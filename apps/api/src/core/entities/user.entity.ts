@@ -1,15 +1,15 @@
 export class User {
-  id: string;
+	id: string;
 
-  email: string;
+	email: string;
 
-  username: string;
+	username: string;
 
-  password: string;
+	password: string;
 
-  name: string;
+	name: string;
 
-  bio?: string;
+	bio?: string;
 
-  avatarId?: string;
+	avatarId?: string;
 }

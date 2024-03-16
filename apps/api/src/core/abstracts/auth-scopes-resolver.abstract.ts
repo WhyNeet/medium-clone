@@ -1,3 +1,3 @@
 export abstract class IAuthScopesResolverService {
-  public abstract getAvailableScopes(): string[];
+	public abstract getAvailableScopes(): string[];
 }
