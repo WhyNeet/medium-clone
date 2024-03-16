@@ -15,6 +15,7 @@ export class AccessTokenGuard extends AuthGuard("access-token") {
 	): TUser {
 		// No errors occured
 		if (user) return super.handleRequest(err, user, info, context, status);
+		if (err) throw err;
 
 		const ctx = context.switchToHttp();
 		const request = ctx.getRequest<Request>();
