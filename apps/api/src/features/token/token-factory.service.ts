@@ -7,8 +7,8 @@ export class TokenFactoryService {
 	private refreshTokenExpiresIn: number;
 
 	constructor(configService: ConfigService) {
-		this.refreshTokenExpiresIn = Number(
-			configService.get<string>("tokens.refreshToken.expiration"),
+		this.refreshTokenExpiresIn = configService.get<number>(
+			"tokens.refreshToken.expiration",
 		);
 	}
 

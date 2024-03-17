@@ -21,14 +21,14 @@ export class TokenEncryptionService {
 		private jwtService: JwtService,
 		private configService: ConfigService,
 	) {
-		this.accessTokenExpiresIn = Number(
-			this.configService.get<string>("tokens.accessToken.expiration"),
+		this.accessTokenExpiresIn = this.configService.get<number>(
+			"tokens.accessToken.expiration",
 		);
-		this.refreshTokenExpiresIn = Number(
-			this.configService.get<string>("tokens.refreshToken.expiration"),
+		this.refreshTokenExpiresIn = this.configService.get<number>(
+			"tokens.refreshToken.expiration",
 		);
-		this.apiTokenDefaultExpiresIn = Number(
-			this.configService.get<string>("tokens.apiToken.expiration"),
+		this.apiTokenDefaultExpiresIn = this.configService.get<number>(
+			"tokens.apiToken.expiration",
 		);
 
 		this.accessTokenSecret = this.configService.get<string>(
