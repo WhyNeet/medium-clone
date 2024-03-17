@@ -2,7 +2,14 @@ import { IDataServices } from "@/core/abstracts/data-services.abstract";
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
-import { Token, TokenSchema, User, UserSchema } from "./model";
+import {
+	Story,
+	StorySchema,
+	Token,
+	TokenSchema,
+	User,
+	UserSchema,
+} from "./model";
 import { MongoDataServices } from "./mongo-data-services.service";
 
 @Module({
@@ -10,6 +17,7 @@ import { MongoDataServices } from "./mongo-data-services.service";
 		MongooseModule.forFeature([
 			{ name: User.name, schema: UserSchema },
 			{ name: Token.name, schema: TokenSchema },
+			{ name: Story.name, schema: StorySchema },
 		]),
 		MongooseModule.forRootAsync({
 			imports: [ConfigModule],
