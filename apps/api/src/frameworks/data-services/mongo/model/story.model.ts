@@ -8,14 +8,21 @@ export type StoryDocument = HydratedDocument<Story>;
 export class Story {
 	id: string;
 
+	// title for previews
 	@Prop()
 	title: string;
 
+	// subtitle for previews
 	@Prop()
 	subtitle: string;
 
+	// content includes title and subtitle
 	@Prop()
 	content: string;
+
+	// short content for previews
+	@Prop()
+	shortContent: string;
 
 	@Prop({ type: MongooseSchema.Types.ObjectId, ref: "User" })
 	author: User;
