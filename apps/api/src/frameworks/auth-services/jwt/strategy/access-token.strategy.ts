@@ -1,11 +1,11 @@
 import { TokenType } from "@/core/entities/token.entity";
+import { AuthService } from "@/features/auth/auth.service";
 import { TokenException } from "@/features/exception/exceptions/token.exception";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy, WithSecretOrKey } from "passport-jwt";
 import { CookiesExtractorService } from "../extractors/cookies-extractor.service";
-import { TokenService } from "../services/token.service";
 import { AccessTokenPayload } from "../types/token-payload.interface";
 import { TokenUser } from "../types/token-user.interface";
 
@@ -15,7 +15,7 @@ export class AccessTokenStrategy extends PassportStrategy(
 	"access-token",
 ) {
 	constructor(
-		private tokenService: TokenService,
+		private authService: AuthService,
 		configService: ConfigService,
 		cookiesExtractorService: CookiesExtractorService,
 	) {
@@ -35,7 +35,7 @@ export class AccessTokenStrategy extends PassportStrategy(
 		if (typeof payload.sub !== "string" || typeof payload.rti !== "string")
 			throw new TokenException.InvalidAccessTokenProvided();
 
-		const isValidToken = await this.tokenService.checkToken(
+		const isValidToken = await this.authService.checkToken(
 			payload.rti,
 			// check the type to be RefreshToken
 			TokenType.RefreshToken,

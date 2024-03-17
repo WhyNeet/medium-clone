@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { User } from "./user.entity";
 
 export class Story {
@@ -9,5 +10,5 @@ export class Story {
 
 	content: string;
 
-	author: User | undefined;
+	author: Types.ObjectId | User | undefined;
 }

@@ -1,13 +1,13 @@
 import { IAuthScopesResolverService } from "@/core/abstracts/auth-scopes-resolver.abstract";
 import { TokenType } from "@/core/entities/token.entity";
-import { CryptoService } from "@/frameworks/auth-services/crypto/crypto.service";
 import { RefreshTokenPayload } from "@/frameworks/auth-services/jwt/types/token-payload.interface";
+import { CryptoService } from "@/frameworks/crypto-services/crypto.service";
 import { Injectable } from "@nestjs/common";
 import { CookieOptions, Response } from "express";
-import { TokenRepositoryService } from "../data-services/token/token-repository.service";
 import { TokenException } from "../exception/exceptions/token.exception";
 import { TokenEncryptionService } from "../token/token-encryption.service";
 import { TokenFactoryService } from "../token/token-factory.service";
+import { TokenRepositoryService } from "../token/token-repository.service";
 
 @Injectable()
 export class AuthService {
@@ -131,5 +131,10 @@ export class AuthService {
 		);
 
 		return apiToken;
+	}
+
+	public async checkToken(jti: string, type: TokenType): Promise<boolean> {
+		const token = await this.tokenRepositoryService.getTokenById(jti);
+		return !!token && token.type === type;
 	}
 }

@@ -1,9 +1,9 @@
 import { CreateUserDto, UserCredentialsDto } from "@/core/dtos/user.dto";
 import { AuthService } from "@/features/auth/auth.service";
-import { TokenRepositoryService } from "@/features/data-services/token/token-repository.service";
-import { UserRepositoryService } from "@/features/data-services/user/user-repository.service";
 import { AuthException } from "@/features/exception/exceptions/auth.exception";
+import { TokenRepositoryService } from "@/features/token/token-repository.service";
 import { UserFactoryService } from "@/features/user/user-factory.service";
+import { UserRepositoryService } from "@/features/user/user-repository.service";
 import { User } from "@/features/user/user.decorator";
 import { AccessTokenGuard } from "@/frameworks/auth-services/jwt/guards/access-token.guard";
 import { TokenUser } from "@/frameworks/auth-services/jwt/types/token-user.interface";

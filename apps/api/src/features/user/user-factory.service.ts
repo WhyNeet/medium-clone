@@ -1,6 +1,6 @@
 import { CreateUserDto, UserDto } from "@/core/dtos/user.dto";
 import { User } from "@/core/entities/user.entity";
-import { CryptoService } from "@/frameworks/auth-services/crypto/crypto.service";
+import { CryptoService } from "@/frameworks/crypto-services/crypto.service";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()

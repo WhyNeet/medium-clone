@@ -2,7 +2,7 @@ import { IDataServices } from "@/core/abstracts/data-services.abstract";
 import { CreateUserDto } from "@/core/dtos/user.dto";
 import type { User } from "@/core/entities/user.entity";
 import { Injectable } from "@nestjs/common";
-import { UserFactoryService } from "../../user/user-factory.service";
+import { UserFactoryService } from "./user-factory.service";
 
 @Injectable()
 export class UserRepositoryService {

@@ -1,11 +1,11 @@
 import { TokenType } from "@/core/entities/token.entity";
+import { AuthService } from "@/features/auth/auth.service";
 import { TokenException } from "@/features/exception/exceptions/token.exception";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { Request } from "express";
 import { ExtractJwt, Strategy, StrategyOptions } from "passport-jwt";
-import { TokenService } from "../services/token.service";
 import type { ApiTokenPayload } from "../types/token-payload.interface";
 import type { TokenUser } from "../types/token-user.interface";
 
@@ -13,7 +13,7 @@ import type { TokenUser } from "../types/token-user.interface";
 export class ApiTokenStrategy extends PassportStrategy(Strategy, "api-token") {
 	constructor(
 		configService: ConfigService,
-		private tokenService: TokenService,
+		private authService: AuthService,
 	) {
 		const options: StrategyOptions = {
 			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -47,7 +47,7 @@ export class ApiTokenStrategy extends PassportStrategy(Strategy, "api-token") {
 				`The token provided cannot be used on "${requestScope}" scope.`,
 			);
 
-		const isValidToken = await this.tokenService.checkToken(
+		const isValidToken = await this.authService.checkToken(
 			payload.jti,
 			TokenType.ApiToken,
 		);

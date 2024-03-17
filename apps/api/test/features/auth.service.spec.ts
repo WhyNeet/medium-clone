@@ -1,9 +1,9 @@
 import { IAuthScopesResolverService } from "@/core/abstracts/auth-scopes-resolver.abstract";
 import { AuthService } from "@/features/auth/auth.service";
-import { TokenRepositoryService } from "@/features/data-services/token/token-repository.service";
 import { TokenEncryptionService } from "@/features/token/token-encryption.service";
 import { TokenFactoryService } from "@/features/token/token-factory.service";
-import { CryptoService } from "@/frameworks/auth-services/crypto/crypto.service";
+import { TokenRepositoryService } from "@/features/token/token-repository.service";
+import { CryptoService } from "@/frameworks/crypto-services/crypto.service";
 import { createMock } from "@golevelup/ts-jest";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";

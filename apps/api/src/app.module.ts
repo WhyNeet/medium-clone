@@ -6,9 +6,7 @@ import { Module } from "@nestjs/common";
 import { AuthController } from "./controllers/auth.controller";
 import { TokenController } from "./controllers/token.controller";
 import { UserController } from "./controllers/user.controller";
-import { AuthFeatureModule } from "./features/auth/auth-feature.module";
-import { DataServicesFeatureModule } from "./features/data-services/data-services-feature.module";
-import { TokenFeatureModule } from "./features/token/token-feature.module";
+import { CryptoServicesModule } from "./frameworks/crypto-services/crypto-services.module";
 import { ExceptionHandlingModule } from "./frameworks/exception-handing/exception-handling.module";
 
 @Module({
@@ -16,11 +14,9 @@ import { ExceptionHandlingModule } from "./frameworks/exception-handing/exceptio
 		ConfigurationModule,
 		DataServicesModule,
 		AuthServicesModule,
+		CryptoServicesModule,
 		FeaturesModule,
 		ExceptionHandlingModule,
-		TokenFeatureModule,
-		AuthFeatureModule,
-		DataServicesFeatureModule,
 	],
 	controllers: [AuthController, UserController, TokenController],
 	providers: [],
