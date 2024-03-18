@@ -8,10 +8,37 @@ export class Story {
 
 	subtitle: string;
 
+	// serialized StoryContent
 	content: string;
 
 	author: Types.ObjectId | User | undefined;
 
 	createdAt?: Date;
 	updatedAt?: Date;
+}
+
+export class StoryContent {
+	blocks: StoryContentBlock[];
+}
+
+export class StoryContentBlock {
+	type: StoryContentBlockType;
+	name: string;
+	text: string;
+	markups: StoryContentBlockMarkup[];
+}
+
+export enum StoryContentBlockType {
+	Paragraph = 1,
+}
+
+export class StoryContentBlockMarkup {
+	start: number;
+	end: number;
+	type: StoryContentBlockMarkupType;
+}
+
+export enum StoryContentBlockMarkupType {
+	Bold = 1,
+	Italic = 2,
 }
