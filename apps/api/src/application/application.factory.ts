@@ -1,5 +1,6 @@
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
+import { WsAdapter } from "@nestjs/platform-ws";
 import cookieParser from "cookie-parser";
 
 export class ApplicationFactory {
@@ -7,6 +8,8 @@ export class ApplicationFactory {
 		module: M,
 	) {
 		const app: INestApplication = await NestFactory.create(module);
+
+		app.useWebSocketAdapter(new WsAdapter(app));
 
 		app.setGlobalPrefix("/api");
 

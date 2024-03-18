@@ -4,6 +4,7 @@ import { AuthServicesModule } from "@/frameworks/auth-services/auth-services.mod
 import { DataServicesModule } from "@/frameworks/data-services/data-services.module";
 import { Module } from "@nestjs/common";
 import { AuthController } from "./controllers/auth.controller";
+import { StoryController } from "./controllers/story.controller";
 import { TokenController } from "./controllers/token.controller";
 import { UserController } from "./controllers/user.controller";
 import { CryptoServicesModule } from "./frameworks/crypto-services/crypto-services.module";
@@ -18,7 +19,12 @@ import { ExceptionHandlingModule } from "./frameworks/exception-handing/exceptio
 		FeaturesModule,
 		ExceptionHandlingModule,
 	],
-	controllers: [AuthController, UserController, TokenController],
+	controllers: [
+		AuthController,
+		UserController,
+		TokenController,
+		StoryController,
+	],
 	providers: [],
 })
 export class AppModule {}
