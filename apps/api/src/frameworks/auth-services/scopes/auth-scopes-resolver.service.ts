@@ -23,7 +23,10 @@ export class AuthScopesResolverService
 					if (!layer.route) return null;
 
 					const path = (layer.route.path as string).slice(5);
-					const scope = path.slice(0, path.indexOf("/"));
+					const end = path.indexOf("/");
+					if (end === -1) return path;
+
+					const scope = path.slice(0, end);
 
 					return scope;
 				})
