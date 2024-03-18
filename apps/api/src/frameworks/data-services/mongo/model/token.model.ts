@@ -4,7 +4,7 @@ import { HydratedDocument } from "mongoose";
 
 export type TokenDocument = HydratedDocument<Token>;
 
-@Schema({ timestamps: { createdAt: true } })
+@Schema()
 export class Token {
 	id: string;
 

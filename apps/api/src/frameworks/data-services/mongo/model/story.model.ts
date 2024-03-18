@@ -4,7 +4,7 @@ import { HydratedDocument, Schema as MongooseSchema } from "mongoose";
 
 export type StoryDocument = HydratedDocument<Story>;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Story {
 	id: string;
 

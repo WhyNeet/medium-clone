@@ -11,4 +11,7 @@ export class Story {
 	content: string;
 
 	author: Types.ObjectId | User | undefined;
+
+	createdAt?: Date;
+	updatedAt?: Date;
 }

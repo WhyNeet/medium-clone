@@ -1,5 +1,4 @@
 import { IDataServices } from "@/core/abstracts/data-services.abstract";
-import { IGenericRepository } from "@/core/abstracts/generic-repository.abstract";
 import { Story } from "@/core/entities/story.entity";
 import { Injectable, OnApplicationBootstrap } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
@@ -19,7 +18,7 @@ export class MongoDataServices
 {
 	users: MongoGenericRepository<User>;
 	tokens: MongoGenericRepository<Token>;
-	stories: IGenericRepository<Story>;
+	stories: MongoGenericRepository<Story>;
 
 	constructor(
 		@InjectModel(User.name) private UserModel: Model<UserDocument>,
