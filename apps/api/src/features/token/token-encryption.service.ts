@@ -124,9 +124,11 @@ export class TokenEncryptionService {
 		token: string,
 		requiredClaims: string[],
 		ignoreExpiration: boolean,
+		secret: string,
 	): Promise<T | null> {
 		const payload = await this.jwtService.verifyAsync(token, {
 			ignoreExpiration,
+			secret,
 		});
 
 		if (requiredClaims.some((claim) => !payload[claim])) return null;
@@ -141,7 +143,12 @@ export class TokenEncryptionService {
 		try {
 			const payload = await this.decodeToken<
 				AccessTokenPayload & { exp: string }
-			>(token, ["sub", "rti"], ignoreExpiration ?? false);
+			>(
+				token,
+				["sub", "rti"],
+				ignoreExpiration ?? false,
+				this.accessTokenSecret,
+			);
 			return payload;
 		} catch (_) {
 			return null;
@@ -157,6 +164,7 @@ export class TokenEncryptionService {
 				token,
 				["sub", "jti"],
 				ignoreExpiration ?? false,
+				this.refreshTokenSecret,
 			);
 			return payload;
 		} catch (_) {

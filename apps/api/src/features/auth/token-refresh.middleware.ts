@@ -29,6 +29,7 @@ export class TokenRefreshMiddleware implements NestMiddleware {
 
 		const accessTokenPayload =
 			await this.tokenEncryptionService.decodeAccessToken(accessToken);
+
 		if (!accessTokenPayload)
 			await this.refreshAccessToken(req, res, refreshTokenPayload);
 
