@@ -9,6 +9,7 @@ import { TokenController } from "./controllers/token.controller";
 import { UserController } from "./controllers/user.controller";
 import { CryptoServicesModule } from "./frameworks/crypto-services/crypto-services.module";
 import { ExceptionHandlingModule } from "./frameworks/exception-handing/exception-handling.module";
+import { GatewayModule } from "./gateways/gateway.module";
 
 @Module({
 	imports: [
@@ -18,6 +19,7 @@ import { ExceptionHandlingModule } from "./frameworks/exception-handing/exceptio
 		CryptoServicesModule,
 		FeaturesModule,
 		ExceptionHandlingModule,
+		GatewayModule,
 	],
 	controllers: [
 		AuthController,
