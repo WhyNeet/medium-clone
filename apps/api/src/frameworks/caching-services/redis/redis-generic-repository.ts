@@ -13,10 +13,9 @@ export class RedisGenericRepository<Entity>
 		options: RedisClientOptions,
 		prefix?: string,
 	): Promise<RedisGenericRepository<Entity>> {
-		const client = createClient(options) as RedisClientType;
-		await client.connect();
+		const client = await createClient(options).connect();
 
-		return new RedisGenericRepository(client, prefix);
+		return new RedisGenericRepository(client as RedisClientType, prefix);
 	}
 
 	public async get(id: string): Promise<Entity> {

@@ -2,13 +2,25 @@ module dev.whyneet.`medium-clone`.api
 
 import ".../conf/Common.pkl"
 
-mongodb = new Common.MongoConnectionProperties {
+mongodb = new Common.DbConnectionProperties {
   host = "localhost"
   port = 27017
 
-  auth = new Common.MongoConnectionAuthProperties {
+  auth = new Common.DbConnectionAuthProperties {
     username = "root"
     password = "root"
+  }
+}
+
+caching = new Common.CachingServices {
+  stories = new Common.DbConnectionProperties {
+    host = "localhost"
+    port = 6379
+
+    auth = new Common.DbConnectionAuthProperties {
+      username = "default"
+      password = "root"
+    }
   }
 }
 
