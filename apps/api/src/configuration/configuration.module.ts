@@ -6,7 +6,7 @@ import { ConfigurationLoader } from "./configuration-loader";
 @Module({
 	imports: [
 		ConfigModule.forRoot({
-			load: [ConfigurationLoader.dev("dev.yaml")],
+			load: [ConfigurationLoader.dev("env.dev.yaml")],
 			isGlobal: true,
 		}),
 	],
