@@ -1,3 +1,4 @@
+import { ValidationExceptionFactory } from "@/features/exception/factory/validation-exception.factory";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { WsAdapter } from "@nestjs/platform-ws";
@@ -16,6 +17,7 @@ export class ApplicationFactory {
 		app.useGlobalPipes(
 			new ValidationPipe({
 				transform: true,
+				exceptionFactory: ValidationExceptionFactory.transform,
 			}),
 		);
 

@@ -1,4 +1,12 @@
-import { MaxLength } from "class-validator";
+import {
+	ArrayMinSize,
+	IsArray,
+	IsNumber,
+	IsString,
+	MaxLength,
+	ValidateNested,
+} from "class-validator";
+import { StoryContentBlock } from "../entities/story.entity";
 
 export class UpdateStoryDto {
 	@MaxLength(512, { message: "must be at most 512 characters long" })
@@ -19,4 +27,30 @@ export class StoryDto {
 
 	createdAt: string;
 	updatedAt: string;
+}
+
+export class StoryDeltasDto {
+	@IsString({ message: "must be a string" })
+	id: string;
+
+	@IsArray({ message: "must be an array" })
+	@ArrayMinSize(1, { message: "must contain at least one delta" })
+	@ValidateNested({ each: true })
+	deltas: StoryDelta[];
+}
+
+export class StoryDelta {
+	block: StoryContentBlock;
+
+	@IsNumber(
+		{ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 0 },
+		{ message: "must be a number" },
+	)
+	type: StoryDeltaType;
+}
+
+export enum StoryDeltaType {
+	Create = 1,
+	Update = 2,
+	Delete = 3,
 }
