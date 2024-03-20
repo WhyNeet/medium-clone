@@ -10,21 +10,14 @@ import { RedisGenericRepository } from "./redis-generic-repository";
 			provide: "StoriesRedis",
 			inject: [ConfigService],
 			useFactory: async (configService: ConfigService) =>
-				await RedisGenericRepository.connect(
-					{
-						username: configService.get<string>(
-							"caching.stories.auth.username",
-						),
-						password: configService.get<string>(
-							"caching.stories.auth.password",
-						),
-						socket: {
-							host: configService.get<string>("caching.stories.host"),
-							port: configService.get<number>("caching.stories.port"),
-						},
+				await RedisGenericRepository.connect({
+					username: configService.get<string>("caching.stories.auth.username"),
+					password: configService.get<string>("caching.stories.auth.password"),
+					socket: {
+						host: configService.get<string>("caching.stories.host"),
+						port: configService.get<number>("caching.stories.port"),
 					},
-					"storyContent",
-				),
+				}),
 		},
 		{
 			provide: ICachingServices,

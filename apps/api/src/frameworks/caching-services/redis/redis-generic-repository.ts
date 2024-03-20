@@ -29,6 +29,36 @@ export class RedisGenericRepository<Entity>
 		await this.client.set(this.constructKey(id), serializedEntity);
 	}
 
+	public async hStore(id: string, entity: Entity): Promise<void> {
+		await this.client.hSet(
+			this.constructKey(id),
+			entity as Record<string, string | number>,
+		);
+	}
+
+	public async hGet<T>(id: string, key: string): Promise<T> {
+		return (await this.client.hGet(this.constructKey(id), key)) as T;
+	}
+
+	public async hSet(
+		id: string,
+		key: string,
+		value: string | number,
+	): Promise<void> {
+		await this.client.hSet(this.constructKey(id), key, value);
+	}
+
+	public async hSetMany(
+		id: string,
+		object: Record<string, string | number>,
+	): Promise<void> {
+		await this.client.hSet(id, object);
+	}
+
+	public async exists(id: string): Promise<boolean> {
+		return Boolean(await this.client.exists(id));
+	}
+
 	public constructKey(id: string): string {
 		return this.prefix ? `${this.prefix}:${id}` : id;
 	}
