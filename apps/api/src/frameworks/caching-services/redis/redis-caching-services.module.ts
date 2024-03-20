@@ -24,5 +24,6 @@ import { RedisGenericRepository } from "./redis-generic-repository";
 			useClass: RedisCachingServices,
 		},
 	],
+	exports: [ICachingServices],
 })
 export class RedisCachingServicesModule {}

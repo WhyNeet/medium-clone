@@ -10,6 +10,7 @@ import { UserController } from "./controllers/user.controller";
 import { CachingServicesModule } from "./frameworks/caching-services/caching-services.module";
 import { CryptoServicesModule } from "./frameworks/crypto-services/crypto-services.module";
 import { ExceptionHandlingModule } from "./frameworks/exception-handing/exception-handling.module";
+import { ProcessingServicesModule } from "./frameworks/processing-services/processing-services.module";
 import { GatewayModule } from "./gateways/gateway.module";
 
 @Module({
@@ -19,6 +20,7 @@ import { GatewayModule } from "./gateways/gateway.module";
 		CachingServicesModule,
 		AuthServicesModule,
 		CryptoServicesModule,
+		ProcessingServicesModule,
 		FeaturesModule,
 		ExceptionHandlingModule,
 		GatewayModule,

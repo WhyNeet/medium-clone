@@ -23,7 +23,7 @@ export class StoryContent {
 
 export class StoryContentBlock {
 	type: StoryContentBlockType;
-	name: string;
+	id: string;
 	text: string;
 	markups: StoryContentBlockMarkup[];
 }
