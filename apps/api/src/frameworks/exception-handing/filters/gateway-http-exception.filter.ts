@@ -15,8 +15,8 @@ export class GatewayHttpExceptionFilter implements ExceptionFilter {
 		this.handleError(client, exception, pattern);
 	}
 
-	private handleError<TClient extends { send: (message: unknown) => void }>(
-		client: TClient,
+	private handleError(
+		client: WebSocket,
 		exception: HttpException,
 		pattern: string,
 	) {
