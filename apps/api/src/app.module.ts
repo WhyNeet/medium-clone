@@ -11,7 +11,6 @@ import { CachingServicesModule } from "./frameworks/caching-services/caching-ser
 import { CryptoServicesModule } from "./frameworks/crypto-services/crypto-services.module";
 import { ExceptionHandlingModule } from "./frameworks/exception-handing/exception-handling.module";
 import { ProcessingServicesModule } from "./frameworks/processing-services/processing-services.module";
-import { GatewayModule } from "./gateways/gateway.module";
 
 @Module({
 	imports: [
@@ -23,7 +22,6 @@ import { GatewayModule } from "./gateways/gateway.module";
 		ProcessingServicesModule,
 		FeaturesModule,
 		ExceptionHandlingModule,
-		GatewayModule,
 	],
 	controllers: [
 		AuthController,
