@@ -29,13 +29,6 @@ export class RedisGenericRepository<Entity>
 		await this.client.set(this.constructKey(id), serializedEntity);
 	}
 
-	public async hStore(id: string, entity: Entity): Promise<void> {
-		await this.client.hSet(
-			this.constructKey(id),
-			entity as Record<string, string | number>,
-		);
-	}
-
 	public async hGet<T>(id: string, key: string): Promise<T> {
 		return (await this.client.hGet(this.constructKey(id), key)) as T;
 	}
@@ -52,7 +45,15 @@ export class RedisGenericRepository<Entity>
 		id: string,
 		object: Record<string, string | number>,
 	): Promise<void> {
-		await this.client.hSet(id, object);
+		await this.client.hSet(this.constructKey(id), object);
+	}
+
+	public async hIncrBy(id: string, key: string, val: number): Promise<void> {
+		await this.client.hIncrBy(this.constructKey(id), key, val);
+	}
+
+	public async hGetAll(id: string): Promise<Entity> {
+		return (await this.client.hGetAll(this.constructKey(id))) as Entity;
 	}
 
 	public async exists(id: string): Promise<boolean> {
