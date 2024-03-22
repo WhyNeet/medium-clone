@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import {
 	ArrayMinSize,
 	IsArray,
@@ -32,11 +33,13 @@ export class StoryDeltasDto {
 	@IsArray({ message: "must be an array" })
 	@ArrayMinSize(1, { message: "must contain at least one delta" })
 	@ValidateNested({ each: true })
+	@Type(() => StoryDelta)
 	deltas: StoryDelta[];
 }
 
 export class StoryDelta {
 	@ValidateNested()
+	@Type(() => StoryDeltasContentBlock)
 	block: StoryDeltasContentBlock;
 
 	@IsNumber(
