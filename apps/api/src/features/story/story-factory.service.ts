@@ -1,4 +1,4 @@
-import { Story } from "@/core/entities/story.entity";
+import { Story, StoryContentBlock } from "@/core/entities/story.entity";
 import { Injectable } from "@nestjs/common";
 import { Types } from "mongoose";
 
@@ -8,6 +8,15 @@ export class StoryFactoryService {
 		const story = new Story();
 
 		story.author = new Types.ObjectId(authorId);
+		story.content = new Map();
+
+		return story;
+	}
+
+	public updateStoryContent(content: Map<string, StoryContentBlock>): Story {
+		const story = new Story();
+
+		story.content = content;
 
 		return story;
 	}
