@@ -1,16 +1,18 @@
 import { ICachingServices } from "@/core/abstracts/caching-services.abstract";
 import { IGenericCachingRepository } from "@/core/abstracts/generic-caching-repository.abstract";
-import { StoryContent } from "@/core/entities/story.entity";
+import { StoryDelta } from "@/core/dtos/story.dto";
 import { Inject, Injectable } from "@nestjs/common";
 import { RedisGenericRepository } from "./redis-generic-repository";
 
 @Injectable()
 export class RedisCachingServices implements ICachingServices {
-	stories: IGenericCachingRepository<StoryContent>;
+	caching: IGenericCachingRepository<unknown>;
 
 	constructor(
-		@Inject("StoriesRedis") storiesRedis: RedisGenericRepository<StoryContent>,
+		@Inject("CachingRedis") cachingRedis: RedisGenericRepository<
+			Record<string, StoryDelta>
+		>,
 	) {
-		this.stories = storiesRedis;
+		this.caching = cachingRedis;
 	}
 }

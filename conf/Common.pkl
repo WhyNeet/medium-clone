@@ -35,6 +35,7 @@ class TokenPropertiesFactory {
 tokenPropertiesFactory = new TokenPropertiesFactory {}
 
 
-class CachingServices {
-  stories: DbConnectionProperties
+class RedisServices {
+  caching: DbConnectionProperties
+  queue: DbConnectionProperties
 }

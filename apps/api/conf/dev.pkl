@@ -12,10 +12,20 @@ mongodb = new Common.DbConnectionProperties {
   }
 }
 
-caching = new Common.CachingServices {
-  stories = new Common.DbConnectionProperties {
+redis = new Common.RedisServices {
+  caching = new Common.DbConnectionProperties {
     host = "localhost"
     port = 6379
+
+    auth = new Common.DbConnectionAuthProperties {
+      username = "default"
+      password = "root"
+    }
+  }
+
+  queue = new Common.DbConnectionProperties {
+    host = "localhost"
+    port = 6378
 
     auth = new Common.DbConnectionAuthProperties {
       username = "default"

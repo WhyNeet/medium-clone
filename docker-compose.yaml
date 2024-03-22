@@ -12,15 +12,14 @@ services:
     volumes:
       - mongodb_data:/data/db
   
-  # caching database for realtime editing
-  dragonfly-stories:
+  dragonfly-caching:
     image: 'docker.dragonflydb.io/dragonflydb/dragonfly'
     ulimits:
       memlock: -1
     command:
       - /bin/sh
       - -c
-      - dragonfly --requirepass=root
+      - dragonfly --requirepass=root --port 6379
     ports:
       - "6379:6379"
     # For better performance, consider `host` mode instead `port` to avoid docker NAT.
@@ -28,8 +27,20 @@ services:
     # https://docs.docker.com/compose/compose-file/compose-file-v3/#network_mode
     # network_mode: "host"
     volumes:
-      - dragonflydata-stories:/data
+      - dragonflydata-caching:/data/caching
+  redis-queue:
+    image: redis:alpine
+    restart: always
+    ports:
+      - 6378:6378
+    command:
+      - /bin/sh
+      - -c
+      - redis-server --requirepass root --port 6378
+    volumes:
+      - redisdata-queue:/data/queue
 
 volumes:
   mongodb_data:
-  dragonflydata-stories:
+  dragonflydata-caching:
+  redisdata-queue:
