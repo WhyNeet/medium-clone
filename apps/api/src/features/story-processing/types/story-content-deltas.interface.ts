@@ -1,7 +1,7 @@
-import { StoryContentBlock } from "@/core/entities/story.entity";
+import { StoryDelta } from "@/core/dtos/story.dto";
 
 export interface StoryContentDeltas {
 	userId: string;
 	storyId: string;
-	deltas: StoryContentBlock[];
+	deltas: StoryDelta[];
 }

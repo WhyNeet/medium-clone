@@ -1,3 +1,10 @@
+import {
+	IsArray,
+	IsNumber,
+	IsString,
+	Min,
+	ValidateNested,
+} from "class-validator";
 import { Types } from "mongoose";
 import { User } from "./user.entity";
 
@@ -8,8 +15,7 @@ export class Story {
 
 	subtitle: string;
 
-	// serialized StoryContent
-	content: string;
+	content: Map<string, StoryContentBlock>;
 
 	author: Types.ObjectId | User | undefined;
 
@@ -17,15 +23,51 @@ export class Story {
 	updatedAt?: Date;
 }
 
-export class StoryContent {
-	blocks: StoryContentBlock[];
+export class StoryContentBlock {
+	@IsNumber(
+		{ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 0 },
+		{ message: "must be a number" },
+	)
+	type: StoryContentBlockType;
+
+	@IsString({ message: "must be a string" })
+	text: string;
+
+	@IsArray({ message: "must be an array" })
+	@ValidateNested()
+	markups: StoryContentBlockMarkup[];
+
+	@IsNumber(
+		{ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 0 },
+		{ message: "must be a number" },
+	)
+	@Min(0, { message: "block index must be equal or greater than 0" })
+	index: number;
 }
 
-export class StoryContentBlock {
-	type: StoryContentBlockType;
+export class StoryDeltasContentBlock {
+	@IsString({ message: "must be a string." })
 	id: string;
+
+	@IsNumber(
+		{ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 0 },
+		{ message: "must be a number" },
+	)
+	type: StoryContentBlockType;
+
+	@IsString({ message: "must be a string" })
 	text: string;
+
+	@IsArray({ message: "must be an array" })
+	@ValidateNested()
 	markups: StoryContentBlockMarkup[];
+
+	@IsNumber(
+		{ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 0 },
+		{ message: "must be a number" },
+	)
+	@Min(0, { message: "block index must be equal or greater than 0" })
+	index: number;
 }
 
 export enum StoryContentBlockType {
@@ -33,8 +75,24 @@ export enum StoryContentBlockType {
 }
 
 export class StoryContentBlockMarkup {
+	@IsNumber(
+		{ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 0 },
+		{ message: "must be a number" },
+	)
+	@Min(0, { message: "must be greater than zero" })
 	start: number;
+
+	@IsNumber(
+		{ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 0 },
+		{ message: "must be a number" },
+	)
+	@Min(0, { message: "must be greater than zero" })
 	end: number;
+
+	@IsNumber(
+		{ allowInfinity: false, allowNaN: false, maxDecimalPlaces: 0 },
+		{ message: "must be a number" },
+	)
 	type: StoryContentBlockMarkupType;
 }
 

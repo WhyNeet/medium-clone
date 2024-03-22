@@ -1,3 +1,4 @@
+import { StoryContentBlock } from "@/core/entities/story.entity";
 import { User } from "@/core/entities/user.entity";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument, Schema as MongooseSchema } from "mongoose";
@@ -17,8 +18,8 @@ export class Story {
 	subtitle: string;
 
 	// content includes title and subtitle
-	@Prop()
-	content: string;
+	@Prop({ type: MongooseSchema.Types.Map })
+	content: Map<string, StoryContentBlock>;
 
 	// short content for previews
 	@Prop()
