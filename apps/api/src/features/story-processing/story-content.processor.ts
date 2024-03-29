@@ -50,7 +50,7 @@ export class StoryContentProcessor {
 					content.set(block.id, block);
 					break;
 				case StoryDeltaType.Update:
-					if (!content[block.id])
+					if (!content.get(block.id))
 						throw new Error(
 							`failed to update: block with id "${block.id}" does not exist`,
 						);
@@ -61,7 +61,7 @@ export class StoryContentProcessor {
 					});
 					break;
 				case StoryDeltaType.Delete:
-					if (!content[block.id])
+					if (!content.get(block.id))
 						throw new Error(
 							`failed to delete: block with id "${block.id}" does not exist`,
 						);
